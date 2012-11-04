@@ -6,17 +6,19 @@ public class Usuario extends Entidad{
     private String apellido;
     private String cuenta;
     private String clave;
-
+    private PerfilUsuario perfil;
+    
     public Usuario() {
         super();
     }
 
-    public Usuario(int id, boolean activo, String nombre, String apellido, String cuenta, String clave) {
+    public Usuario(int id, boolean activo, String nombre, String apellido, String cuenta, String clave, PerfilUsuario perfil) {
         super(id, activo);
         this.nombre = nombre;
         this.apellido = apellido;
         this.cuenta = cuenta;
         this.clave = clave;
+        this.perfil = perfil;
     }
     
     public String getNombre() {
@@ -51,10 +53,17 @@ public class Usuario extends Entidad{
         this.clave = clave;
     }
 
+    public PerfilUsuario getPerfil() {
+        return perfil;
+    }
+
+    public void setPerfil(PerfilUsuario perfil) {
+        this.perfil = perfil;
+    }
+
     @Override
     public String toString() {
-        return "Usuario{" + "nombre=" + nombre + ", apellido=" + apellido + ", cuenta=" + cuenta + ", clave=" + clave + '}';
+        return "Usuario{" + "nombre=" + nombre + ", apellido=" + apellido + ", cuenta=" + cuenta + ", clave=" + clave + ", perfilId=" + perfil.id +  '}';
     }
-    
     
 }

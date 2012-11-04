@@ -7,13 +7,13 @@ import oracle.jdbc.pool.OracleDataSource;
 
 /**
  *
- * @author Maria Elena
+ * @author Maria Elena, Katerina, Samuel.
  */
 public class Conexion {
 
-    private static Connection conn; // variable de tipo Connetion ella permite la conexion
+    public static Connection conn; // variable de tipo Connetion ella permite la conexion
     public static Statement st; // variable de tipo Stament para insertar querys y hacer consultas insert delete update y select
-
+    
     private Conexion() {
     }
 
@@ -34,5 +34,9 @@ public class Conexion {
     
     public static boolean convertirBoolean(String activo){
         return activo.equalsIgnoreCase("1");
+    }
+    
+    public static char convertirBooleanAChar(boolean conv) {
+        return conv == true?'1':'0';
     }
 }
