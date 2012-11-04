@@ -7,7 +7,6 @@ package com.itla.data;
 public abstract class AccesoDatos {
    
     public abstract void seleccionarPorId(int id);
-        
     
     public void selecionarTodo() {
     }

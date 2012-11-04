@@ -12,7 +12,7 @@ import oracle.jdbc.pool.OracleDataSource;
 public class Conexion {
 
     private static Connection conn; // variable de tipo Connetion ella permite la conexion
-    private static Statement st; // variable de tipo Stament para insertar querys y hacer consultas insert delete update y select
+    public static Statement st; // variable de tipo Stament para insertar querys y hacer consultas insert delete update y select
 
     private Conexion() {
     }
@@ -21,7 +21,7 @@ public class Conexion {
         //aqui creamos un datasource para iniciar la conexion 
         OracleDataSource ods = new OracleDataSource();
         //aqui creamos un url de conexion 
-        ods.setURL("jdbc:oracle:thin:ManejadorInvitaciones/1234@MININT-OAII0R6:1521:XE");
+        ods.setURL("jdbc:oracle:thin:JEHOVA/1234@MININT-OAII0R6:1521:XE");
         conn = ods.getConnection();
         st = conn.createStatement();
     }
@@ -30,5 +30,9 @@ public class Conexion {
         if (conn != null) {
             conn.close();            
         }
+    }
+    
+    public static boolean convertirBoolean(String activo){
+        return activo.equalsIgnoreCase("1");
     }
 }

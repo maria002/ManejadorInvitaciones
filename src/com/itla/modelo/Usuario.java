@@ -1,12 +1,24 @@
 package com.itla.modelo;
 
-public class Usuario {
+public class Usuario extends Entidad{
 
     private String nombre;
     private String apellido;
     private String cuenta;
     private String clave;
 
+    public Usuario() {
+        super();
+    }
+
+    public Usuario(int id, boolean activo, String nombre, String apellido, String cuenta, String clave) {
+        super(id, activo);
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.cuenta = cuenta;
+        this.clave = clave;
+    }
+    
     public String getNombre() {
         return nombre;
     }
@@ -38,4 +50,11 @@ public class Usuario {
     public void setClave(String clave) {
         this.clave = clave;
     }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "nombre=" + nombre + ", apellido=" + apellido + ", cuenta=" + cuenta + ", clave=" + clave + '}';
+    }
+    
+    
 }
