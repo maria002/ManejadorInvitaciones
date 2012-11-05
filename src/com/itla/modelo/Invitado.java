@@ -1,12 +1,25 @@
 package com.itla.modelo;
 
-public class Invitado {
+public class Invitado extends Entidad {
 
     private String nombre;
     private String apellido;
     private String telefono;
     private String direccion;
     private String sexo;
+
+    public Invitado() {
+        super();
+    }
+
+    public Invitado(int id, boolean activo, String nombre, String apellido, String telefono, String direccion, String sexo) {
+        super(id, activo);
+        this.nombre = nombre;
+        this.apellido = apellido;
+        this.telefono = telefono;
+        this.direccion = direccion;
+        this.sexo = sexo;
+    }
 
     public String getNombre() {
         return nombre;
@@ -46,5 +59,10 @@ public class Invitado {
 
     public void setSexo(String sexo) {
         this.sexo = sexo;
+    }
+
+    @Override
+    public String toString() {
+        return "Invitado{" + "nombre=" + nombre + ", apellido=" + apellido + ", telefono=" + telefono + ", direccion=" + direccion + ", sexo=" + sexo + '}';
     }
 }
