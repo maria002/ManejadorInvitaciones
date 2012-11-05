@@ -1,12 +1,21 @@
 package com.itla.modelo;
 
-import java.util.Date;
+import java.sql.Date;
 
-public class Evento {
+public class Evento extends Entidad {
 
     private String nombre;
     private Date fecha;
     private String ubicacion;
+    public Evento(){
+        super();
+    }
+    public Evento(int id,boolean activo, String nombre, Date fecha, String ubicacion) {
+        super(id, activo);
+        this.nombre = nombre;
+        this.fecha = fecha;
+        this.ubicacion = ubicacion;
+    }
 
     public String getNombre() {
         return nombre;
@@ -31,4 +40,10 @@ public class Evento {
     public void setUbicacion(String ubicacion) {
         this.ubicacion = ubicacion;
     }
+
+    @Override
+    public String toString() {
+        return "Evento{" + "nombre=" + nombre + ", fecha=" + fecha + ", ubicacion=" + ubicacion + '}';
+    }
+    
 }
