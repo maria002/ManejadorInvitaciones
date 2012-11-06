@@ -30,8 +30,9 @@ public class EventoAccesoDatos {
             PreparedStatement ps = Conexion.conn.prepareStatement("insert into Evento values (SEC_ID_EVENTO.nextval, ?,?,?,?)");
             ps.setString(1, event.getNombre());
             ps.setDate(2, event.getFecha());
-            ps.setString(4, String.valueOf(Conexion.convertirBooleanAChar(event.isActivo())));
             ps.setString(3, event.getUbicacion());
+            ps.setString(4, String.valueOf(Conexion.convertirBooleanAChar(event.isActivo())));
+            
             
             
             Conexion.conn.setAutoCommit(false);

@@ -22,24 +22,20 @@ public class InvitadoAcessoDatos {
         Conexion.desconectar();
         return invitados;
     }     
-    
-    public static void insertar(Invitado invitado){
-        try {     
-            Conexion.conectar();
-            PreparedStatement ps = Conexion.conn.prepareStatement("insert into invitado values(sec_idInvitacion.nextval, ?,?,?,?,?)");
-            ps.setString(1,invitado.getNombre());
-            ps.setString(2,invitado.getNombre());
-            ps.setString(3,invitado.getTelefono());
-            ps.setString(4,invitado.getDireccion());
-            ps.setString(5,invitado.getSexo());
-            ps.setBoolean(6,String.valueOf(Conexion.convertirBooleanAChar(invitado.isActivo())));
-            Conexion.conn.setAutoCommit(false);
-            ps.executeUpdate();
-            Conexion.conn.commit();
-        } catch (SQLException ex) {
-            Logger.getLogger(InvitadoAcessoDatos.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         
+    public static void insertar(Invitado invitado) throws SQLException{
+        Conexion.conectar();
+        PreparedStatement ps = Conexion.conn.prepareStatement("insert into invitado values(SEC_ID_INVITADO.nextval, ?,?,?,?,?,?)");
+        ps.setString(1, invitado.getNombre());
+        ps.setString(2, invitado.getApellido());
+        ps.setString(3, invitado.getTelefono());
+        ps.setString(4, invitado.getDireccion());
+        ps.setString(5, String.valueOf(Conexion.convertirBooleanAChar(invitado.isActivo())));
+        ps.setString(6, invitado.getSexo());
+        Conexion.conn.setAutoCommit(false);
+        ps.executeUpdate();
+        Conexion.conn.commit();
+        
+        
     }
     
 }

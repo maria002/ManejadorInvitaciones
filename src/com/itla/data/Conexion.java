@@ -21,7 +21,7 @@ public class Conexion {
         //aqui creamos un datasource para iniciar la conexion 
         OracleDataSource ods = new OracleDataSource();
         //aqui creamos un url de conexion 
-        ods.setURL("jdbc:oracle:thin:INVITACIONMANAGER 1.1/musica59@Owner-HP:1521:XE");
+        ods.setURL("jdbc:oracle:thin:MANEJADORINVITACIONES/musica59@Owner-HP:1521:XE");
         conn = ods.getConnection();
         st = conn.createStatement();
     }
