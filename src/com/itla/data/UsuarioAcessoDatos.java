@@ -37,14 +37,14 @@ public class UsuarioAcessoDatos {
         Usuario u = null;
         while (rs.next()) {
             u = new Usuario(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")),
-                    rs.getString("nombre"), rs.getString("apellido"), rs.getString("cuenta"), "", 
+                    rs.getString("nombre"), rs.getString("apellido"), rs.getString("cuenta"), "",
                     new PerfilUsuario(rs.getInt("Id_Perfil_Usuario"), true, ""));
         }
         Conexion.desconectar();
         return u;
     }
 
-    public static void insertar(Usuario usuario) throws SQLException  {
+    public static void insertar(Usuario usuario) throws SQLException {
         try {
             Conexion.conectar();
             PreparedStatement ps = Conexion.conn.prepareStatement("Insert into Usuario(Id, Nombre, Apellido, Cuenta, Clave, Activo, ID_PERFIL_USUARIO) values(sec_IdUsuarios, ?, ?, ?, ?, ?, ?)");
@@ -57,10 +57,10 @@ public class UsuarioAcessoDatos {
             Conexion.conn.setAutoCommit(false);
             ps.executeUpdate();
             Conexion.conn.commit();
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(UsuarioAcessoDatos.class.getName()).log(Level.SEVERE, null, ex);
-        }finally{
+        } finally {
             Conexion.conn.rollback();
             Conexion.conn.setAutoCommit(true);
             Conexion.desconectar();
