@@ -1,34 +1,87 @@
 package com.itla.vista;
 
-import com.itla.AppIniciar.AppEventos;
-import com.itla.AppIniciar.ClassManager;
+import com.itla.modelo.Evento;
+import com.itla.servicios.ServicioEvento;
+import java.awt.Window;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
 public class PanelEvento extends javax.swing.JPanel {
 
-    private JDialog padre;
+    private Window padre;
+    private ServicioEvento servicio = new ServicioEvento();
+    private Evento evento;
 
-    public PanelEvento(JDialog padre) {
-        this.padre = padre;
+    public PanelEvento() {
+        super();
         initComponents();
-
-
     }
 
-    public void validar() {
-        if (txtName.getText().isEmpty()) {
+    public PanelEvento(Window padre) {
+        super();
+        this.padre = padre;
+        initComponents();
+    }
+
+    public PanelEvento(Window padre, Evento evento) {
+        this(padre);
+        this.evento = evento;
+        initComponents();
+        cargarData();
+        btnGuardarContinuar.setVisible(false);
+    }
+    
+    private void cargarData() {
+        txtID.setText(String.valueOf(evento.getId()));
+        txtNombre.setText(evento.getNombre());
+        txtFecha.setText(Evento.formato.format(evento.getFecha()));
+        txtUbicacion.setText(evento.getUbicacion());
+    }
+
+    private boolean validar() {
+        boolean valido = true;
+        if (txtNombre.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe insertar su nombre");
+            valido = false;
         } else if (txtFecha.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "Debe insertar la fecha");
-
-        } else if (txtUbiacacion.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Debe poner su ubicacion");
+            valido = false;
+        } else if (txtUbicacion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe insertar su ubicacion");
+            valido = false;
         }
+        return valido;
+    }
+
+    private void guardar() {
+        try {
+            Evento evento = new Evento(0, chkActivo.isSelected(), txtNombre.getText(), Evento.formato.parse(txtFecha.getText()), txtUbicacion.getText());
+            if (!txtID.getText().isEmpty()) {
+                evento.setId(Integer.parseInt(txtID.getText()));
+            }
+            servicio.insertar(evento);
+            JOptionPane.showMessageDialog(padre, "Datos insertados correctamente", "Datos insertados", JOptionPane.INFORMATION_MESSAGE);
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al guardar el registro en la base de datos", "Error guardando", JOptionPane.ERROR_MESSAGE);
+        } catch (ParseException ex) {
+            Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error convertiendo la fecha", "Formato de fecha invalida", JOptionPane.ERROR_MESSAGE);
+        } catch (Exception ex) {
+            Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error guardando el registro", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    private void limpiarCampos() {
+        txtID.setText("");
+        txtNombre.setText("");
+        txtFecha.setText("");
+        txtUbicacion.setText("");
+        chkActivo.setSelected(true);
     }
 
     /**
@@ -45,13 +98,14 @@ public class PanelEvento extends javax.swing.JPanel {
         lbNombre = new javax.swing.JLabel();
         lbFecha = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
-        txtName = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
         jLabel5 = new javax.swing.JLabel();
         txtID = new javax.swing.JTextField();
         txtFecha = new javax.swing.JFormattedTextField();
-        txtUbiacacion = new javax.swing.JTextField();
+        txtUbicacion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         chkActivo = new javax.swing.JCheckBox();
+        btnGuardarContinuar = new javax.swing.JButton();
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -76,6 +130,7 @@ public class PanelEvento extends javax.swing.JPanel {
         jLabel5.setText("ID:");
 
         txtID.setEditable(false);
+        txtID.setEnabled(false);
 
         txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
 
@@ -84,14 +139,23 @@ public class PanelEvento extends javax.swing.JPanel {
         chkActivo.setSelected(true);
         chkActivo.setText("Activo");
 
+        btnGuardarContinuar.setText("Guardar y continuar");
+        btnGuardarContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarContinuarActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnGuardarContinuar)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar))
@@ -105,11 +169,11 @@ public class PanelEvento extends javax.swing.JPanel {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUbiacacion)
-                            .addComponent(txtID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(chkActivo, javax.swing.GroupLayout.Alignment.LEADING))))
-                .addContainerGap(18, Short.MAX_VALUE))
+                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtUbicacion)
+                            .addComponent(chkActivo, javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -123,7 +187,7 @@ public class PanelEvento extends javax.swing.JPanel {
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(txtID, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(txtName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(12, 12, 12)
@@ -134,7 +198,7 @@ public class PanelEvento extends javax.swing.JPanel {
                 .addGap(9, 9, 9)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel3)
-                    .addComponent(txtUbiacacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -142,42 +206,42 @@ public class PanelEvento extends javax.swing.JPanel {
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnGuardar)
-                    .addComponent(btnCancelar))
+                    .addComponent(btnCancelar)
+                    .addComponent(btnGuardarContinuar))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
         //metodo valida formulario
-        validar();
-        
-        ClassManager cl = new ClassManager();
-        cl.nombreEvento = txtName.getText();
-        cl.ubicacionEvento = txtUbiacacion.getText();
-        cl.fechaEvento = txtFecha.getText();
-        if (chkActivo.isSelected() == true) {
-            cl.activoEvento = 1;
-        } else {
-            cl.activoEvento = 0;
+        if (validar()) {
+            //metodo para guardar
+            guardar();
         }
-        try {
-            try {
-                cl.InsertaEvento();
-            } catch (ParseException ex) {
-                Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        //Limpiar los campos
+        limpiarCampos();
+        //Cerrar la ventana
+        padre.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
         padre.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnGuardarContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarContinuarActionPerformed
+        //metodo valida formulario
+        if (validar()) {
+            //metodo para guardar
+            guardar();
+        }
+        //Limpiar los campos
+        limpiarCampos();
+    }//GEN-LAST:event_btnGuardarContinuarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnGuardarContinuar;
     private javax.swing.JCheckBox chkActivo;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -186,7 +250,7 @@ public class PanelEvento extends javax.swing.JPanel {
     private javax.swing.JLabel lbNombre;
     private javax.swing.JFormattedTextField txtFecha;
     private javax.swing.JTextField txtID;
-    private javax.swing.JTextField txtName;
-    private javax.swing.JTextField txtUbiacacion;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtUbicacion;
     // End of variables declaration//GEN-END:variables
 }
