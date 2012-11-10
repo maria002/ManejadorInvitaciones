@@ -1,12 +1,15 @@
 package com.itla.modelo;
 
-import java.sql.Date;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Evento extends Entidad {
 
     private String nombre;
     private Date fecha;
     private String ubicacion;
+    public final static SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+    
     public Evento(){
         super();
     }

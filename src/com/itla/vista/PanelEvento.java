@@ -5,6 +5,7 @@ import com.itla.servicios.ServicioEvento;
 import java.awt.Window;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -13,7 +14,8 @@ public class PanelEvento extends javax.swing.JPanel {
 
     private Window padre;
     private ServicioEvento servicio = new ServicioEvento();
-    private Evento evento;
+    private List<Evento> listaEventos;
+    private int modificandoIdx = 0;
 
     public PanelEvento() {
         super();
@@ -26,19 +28,23 @@ public class PanelEvento extends javax.swing.JPanel {
         initComponents();
     }
 
-    public PanelEvento(Window padre, Evento evento) {
+    public PanelEvento(Window padre, List<Evento> eventos) {
         this(padre);
-        this.evento = evento;
-        initComponents();
-        cargarData();
-        btnGuardarContinuar.setVisible(false);
+        this.listaEventos = eventos;
+        if (eventos != null && eventos.size() == 1) {
+            btnGuardarContinuar.setVisible(false);
+            cargarData();
+        } else if (eventos != null && eventos.size() > 0) {
+            cargarData();
+        }
     }
-    
+
     private void cargarData() {
-        txtID.setText(String.valueOf(evento.getId()));
-        txtNombre.setText(evento.getNombre());
-        txtFecha.setText(Evento.formato.format(evento.getFecha()));
-        txtUbicacion.setText(evento.getUbicacion());
+        txtID.setText(String.valueOf(listaEventos.get(modificandoIdx).getId()));
+        txtNombre.setText(listaEventos.get(modificandoIdx).getNombre());
+        txtFecha.setText(Evento.formato.format(listaEventos.get(modificandoIdx).getFecha()));
+        txtUbicacion.setText(listaEventos.get(modificandoIdx).getUbicacion());
+        chkActivo.setSelected(listaEventos.get(modificandoIdx).isActivo());
     }
 
     private boolean validar() {
@@ -64,6 +70,7 @@ public class PanelEvento extends javax.swing.JPanel {
             }
             servicio.insertar(evento);
             JOptionPane.showMessageDialog(padre, "Datos insertados correctamente", "Datos insertados", JOptionPane.INFORMATION_MESSAGE);
+            txtNombre.requestFocus();
         } catch (SQLException ex) {
             Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error al guardar el registro en la base de datos", "Error guardando", JOptionPane.ERROR_MESSAGE);
@@ -93,8 +100,6 @@ public class PanelEvento extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnGuardar = new javax.swing.JButton();
-        btnCancelar = new javax.swing.JButton();
         lbNombre = new javax.swing.JLabel();
         lbFecha = new javax.swing.JLabel();
         jLabel3 = new javax.swing.JLabel();
@@ -105,21 +110,10 @@ public class PanelEvento extends javax.swing.JPanel {
         txtUbicacion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
         chkActivo = new javax.swing.JCheckBox();
+        panelBotones = new javax.swing.JPanel();
         btnGuardarContinuar = new javax.swing.JButton();
-
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        btnCancelar.setText("Cancelar");
-        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCancelarActionPerformed(evt);
-            }
-        });
+        btnGuardar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
 
         lbNombre.setText("Nombre:*");
 
@@ -139,12 +133,31 @@ public class PanelEvento extends javax.swing.JPanel {
         chkActivo.setSelected(true);
         chkActivo.setText("Activo");
 
+        panelBotones.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
+
         btnGuardarContinuar.setText("Guardar y continuar");
         btnGuardarContinuar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnGuardarContinuarActionPerformed(evt);
             }
         });
+        panelBotones.add(btnGuardarContinuar);
+
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+        panelBotones.add(btnGuardar);
+
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
+        panelBotones.add(btnCancelar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -153,32 +166,25 @@ public class PanelEvento extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnGuardarContinuar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnGuardar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCancelar))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lbNombre)
-                            .addComponent(jLabel5)
-                            .addComponent(lbFecha)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                            .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtUbicacion)
-                            .addComponent(chkActivo, javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(txtID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(lbNombre)
+                    .addComponent(jLabel5)
+                    .addComponent(lbFecha)
+                    .addComponent(jLabel3)
+                    .addComponent(jLabel4))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(txtFecha, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtNombre, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtUbicacion)
+                    .addComponent(chkActivo, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(txtID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 222, Short.MAX_VALUE))
+                .addContainerGap(22, Short.MAX_VALUE))
+            .addComponent(panelBotones, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(15, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jLabel5)
@@ -203,11 +209,8 @@ public class PanelEvento extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
                     .addComponent(chkActivo))
-                .addGap(15, 15, 15)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnCancelar)
-                    .addComponent(btnGuardarContinuar))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(panelBotones, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
@@ -225,7 +228,6 @@ public class PanelEvento extends javax.swing.JPanel {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
         padre.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
 
@@ -237,6 +239,12 @@ public class PanelEvento extends javax.swing.JPanel {
         }
         //Limpiar los campos
         limpiarCampos();
+        if (listaEventos != null && listaEventos.size() > 0 && modificandoIdx < listaEventos.size() - 1) {
+            modificandoIdx++;
+            cargarData();
+        } else if (listaEventos != null && modificandoIdx == listaEventos.size() - 1) {
+            padre.dispose();
+        }
     }//GEN-LAST:event_btnGuardarContinuarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -248,6 +256,7 @@ public class PanelEvento extends javax.swing.JPanel {
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel lbFecha;
     private javax.swing.JLabel lbNombre;
+    private javax.swing.JPanel panelBotones;
     private javax.swing.JFormattedTextField txtFecha;
     private javax.swing.JTextField txtID;
     private javax.swing.JTextField txtNombre;
