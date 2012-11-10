@@ -1,31 +1,36 @@
 package com.itla.vista;
 
+import com.itla.AppIniciar.AppEventos;
+import com.itla.AppIniciar.ClassManager;
+import java.sql.SQLException;
+import java.text.ParseException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 
-/**
- *
- * @author Samuel
- */
 public class PanelEvento extends javax.swing.JPanel {
 
     private JDialog padre;
+
     public PanelEvento(JDialog padre) {
-       this.padre = padre;
+        this.padre = padre;
         initComponents();
+
+
     }
-     public void validar(){
-       if(txtName.getText().isEmpty()){
-           JOptionPane.showMessageDialog(null, "Debe insertar su nombre");
-       }
-       else if(txtFecha.getText().isEmpty()){
-           JOptionPane.showMessageDialog(null, "Debe insertar la fecha");
-           
-       }
-       else if (txtUbiacacion.getText().isEmpty()){
-           JOptionPane.showMessageDialog(null, "Debe poner su ubicacion");
-       }
-     }
+
+    public void validar() {
+        if (txtName.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe insertar su nombre");
+        } else if (txtFecha.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe insertar la fecha");
+
+        } else if (txtUbiacacion.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Debe poner su ubicacion");
+        }
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -35,7 +40,7 @@ public class PanelEvento extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnEnviar = new javax.swing.JButton();
+        btnGuardar = new javax.swing.JButton();
         btnCancelar = new javax.swing.JButton();
         lbNombre = new javax.swing.JLabel();
         lbFecha = new javax.swing.JLabel();
@@ -46,12 +51,12 @@ public class PanelEvento extends javax.swing.JPanel {
         txtFecha = new javax.swing.JFormattedTextField();
         txtUbiacacion = new javax.swing.JTextField();
         jLabel4 = new javax.swing.JLabel();
-        jCheckBox1 = new javax.swing.JCheckBox();
+        chkActivo = new javax.swing.JCheckBox();
 
-        btnEnviar.setText("Guardar");
-        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEnviarActionPerformed(evt);
+                btnGuardarActionPerformed(evt);
             }
         });
 
@@ -72,12 +77,12 @@ public class PanelEvento extends javax.swing.JPanel {
 
         txtID.setEditable(false);
 
-        txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(java.text.DateFormat.getDateInstance(java.text.DateFormat.SHORT))));
+        txtFecha.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter(new java.text.SimpleDateFormat("dd/MM/yyyy"))));
 
         jLabel4.setText("Activo*");
 
-        jCheckBox1.setSelected(true);
-        jCheckBox1.setText("Activo");
+        chkActivo.setSelected(true);
+        chkActivo.setText("Activo");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -87,7 +92,7 @@ public class PanelEvento extends javax.swing.JPanel {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnEnviar)
+                        .addComponent(btnGuardar)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnCancelar))
                     .addGroup(layout.createSequentialGroup()
@@ -103,7 +108,7 @@ public class PanelEvento extends javax.swing.JPanel {
                             .addComponent(txtName, javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(txtUbiacacion)
                             .addComponent(txtID, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jCheckBox1, javax.swing.GroupLayout.Alignment.LEADING))))
+                            .addComponent(chkActivo, javax.swing.GroupLayout.Alignment.LEADING))))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -112,7 +117,6 @@ public class PanelEvento extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(6, 6, 6)
                         .addComponent(jLabel5)
                         .addGap(12, 12, 12)
                         .addComponent(lbNombre))
@@ -134,29 +138,47 @@ public class PanelEvento extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
-                    .addComponent(jCheckBox1))
+                    .addComponent(chkActivo))
                 .addGap(15, 15, 15)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnEnviar)
+                    .addComponent(btnGuardar)
                     .addComponent(btnCancelar))
                 .addContainerGap())
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
-        // TODO add your handling code here:
-       validar();
-    }//GEN-LAST:event_btnEnviarActionPerformed
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        //metodo valida formulario
+        validar();
+        
+        ClassManager cl = new ClassManager();
+        cl.nombreEvento = txtName.getText();
+        cl.ubicacionEvento = txtUbiacacion.getText();
+        cl.fechaEvento = txtFecha.getText();
+        if (chkActivo.isSelected() == true) {
+            cl.activoEvento = 1;
+        } else {
+            cl.activoEvento = 0;
+        }
+        try {
+            try {
+                cl.InsertaEvento();
+            } catch (ParseException ex) {
+                Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         // TODO add your handling code here:
-       padre.dispose();
+        padre.dispose();
     }//GEN-LAST:event_btnCancelarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
-    private javax.swing.JButton btnEnviar;
-    private javax.swing.JCheckBox jCheckBox1;
+    private javax.swing.JButton btnGuardar;
+    private javax.swing.JCheckBox chkActivo;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;

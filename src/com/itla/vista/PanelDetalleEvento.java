@@ -124,6 +124,7 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
         JDialog ventana = new JDialog();
         ventana.add(new PanelEvento(ventana));
         ventana.setModal(true);
+        ventana.setSize(300, 230);
         ventana.setVisible(true);
     }//GEN-LAST:event_btnAgregarActionPerformed
 
