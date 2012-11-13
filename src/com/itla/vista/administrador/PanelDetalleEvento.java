@@ -1,4 +1,4 @@
-package com.itla.vista;
+package com.itla.vista.administrador;
 
 import com.itla.modelo.Evento;
 import com.itla.servicios.ServicioEvento;

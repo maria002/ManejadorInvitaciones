@@ -1,6 +1,7 @@
 package com.itla.sistema;
 
-import com.itla.vista.ContenedorPrincipal;
+import com.itla.data.Conexion;
+import com.itla.vista.administrador.ContenedorPrincipal;
 
 /**
  *
@@ -22,6 +23,7 @@ public class Sistema {
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
                 new ContenedorPrincipal().setVisible(true);
+               
             }
         });
     }
