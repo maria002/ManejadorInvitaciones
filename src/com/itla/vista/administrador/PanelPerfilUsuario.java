@@ -1,5 +1,11 @@
 package com.itla.vista.administrador;
 
+import com.itla.modelo.PerfilUsuario;
+import com.itla.servicios.ServicioPerfilUsuario;
+import java.awt.Window;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -8,28 +14,39 @@ import javax.swing.JOptionPane;
  */
 public class PanelPerfilUsuario extends javax.swing.JPanel {
 
-    /**
-     * Creates new form PanelPerfilUsuario
-     */
+    private ServicioPerfilUsuario servicio = new ServicioPerfilUsuario();
+    private Window padre;
+
     public PanelPerfilUsuario() {
-       initComponents();
+        initComponents();
     }
-    
+
     public boolean validar() {
         boolean tmp = true;
         if (txtNombre.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "El campo nombre esta vacio");
             tmp = false;
         }
-       return tmp;
+        return tmp;
     }
-    private void guardar () {
-        if (validar()) {
-            JOptionPane.showMessageDialog(null, "Datos Guardados");
+
+    private void guardar() {
+        PerfilUsuario perfil = new PerfilUsuario(0, chkActivo.isSelected(), txtNombre.getText());
+        try {
+            //if (txtId.getText().isEmpty()) {
+                perfil.setId(Integer.parseInt(txtId.getText()));
+            //}
+            JOptionPane.showMessageDialog(padre, "Datos insertados correctamente", "Datos insertados", JOptionPane.INFORMATION_MESSAGE);
+            txtNombre.requestFocus();
+            servicio.insertar(perfil);
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(null, "Error al guardar el registro en la base de datos", "Error guardando", JOptionPane.ERROR_MESSAGE);
         }
     }
+
     private void limpiarCampos() {
-      txtNombre.setText("");  
+        txtNombre.setText("");
     }
 
     /**
@@ -63,10 +80,25 @@ public class PanelPerfilUsuario extends javax.swing.JPanel {
         lblNombre.setText("Nombre:*");
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCancelarActionPerformed(evt);
+            }
+        });
 
         btnGuardarContinuar.setText("Guadar y continuar");
+        btnGuardarContinuar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarContinuarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -118,6 +150,24 @@ public class PanelPerfilUsuario extends javax.swing.JPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        // TODO add your handling code here:
+        if (validar()) {
+            //metodo para guardar
+            guardar();
+        }
+        limpiarCampos();
+    }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        // TODO add your handling code here:
+        padre.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
+    private void btnGuardarContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarContinuarActionPerformed
+        // TODO add your handling code here:  
+    }//GEN-LAST:event_btnGuardarContinuarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
