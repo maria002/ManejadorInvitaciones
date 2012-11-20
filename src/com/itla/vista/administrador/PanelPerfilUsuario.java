@@ -33,12 +33,12 @@ public class PanelPerfilUsuario extends javax.swing.JPanel {
     private void guardar() {
         PerfilUsuario perfil = new PerfilUsuario(0, chkActivo.isSelected(), txtNombre.getText());
         try {
-            //if (txtId.getText().isEmpty()) {
+            if (!txtId.getText().isEmpty()) {
                 perfil.setId(Integer.parseInt(txtId.getText()));
-            //}
+            }
+            servicio.insertar(perfil);
             JOptionPane.showMessageDialog(padre, "Datos insertados correctamente", "Datos insertados", JOptionPane.INFORMATION_MESSAGE);
             txtNombre.requestFocus();
-            servicio.insertar(perfil);
         } catch (SQLException ex) {
             Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(null, "Error al guardar el registro en la base de datos", "Error guardando", JOptionPane.ERROR_MESSAGE);
