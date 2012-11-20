@@ -1,6 +1,8 @@
 package com.itla.sistema;
 
-import com.itla.vista.ContenedorPrincipal;
+import com.itla.data.Conexion;
+//import com.itla.vista.administrador.Contenedor;
+//import com.itla.vista.administrador.ContenedorPrincipal;
 
 /**
  *
@@ -16,12 +18,14 @@ public class Sistema {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ContenedorPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            
         }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ContenedorPrincipal().setVisible(true);
+                
+                //new Contenedor().setVisible(true);
+               
             }
         });
     }

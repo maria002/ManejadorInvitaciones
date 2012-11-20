@@ -1,4 +1,4 @@
-package com.itla.vista;
+package com.itla.vista.administrador;
 
 import javax.swing.JDialog;
 

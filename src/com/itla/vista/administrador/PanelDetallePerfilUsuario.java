@@ -1,4 +1,15 @@
-package com.itla.vista;
+package com.itla.vista.administrador;
+
+import com.itla.modelo.Evento;
+import com.itla.modelo.PerfilUsuario;
+import com.itla.servicios.ServicioPerfilUsuario;
+import java.awt.Window;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -6,11 +17,63 @@ package com.itla.vista;
  */
 public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
 
-    /**
-     * Creates new form PanelDetallePerfilUsuario
-     */
+    private Window padre;
+    private ServicioPerfilUsuario servicio = new ServicioPerfilUsuario();
+    private ArrayList<PerfilUsuario> perfil;
+    DefaultTableModel model;
+    Object[] columnasTabla;
+
     public PanelDetallePerfilUsuario() {
+        refrescar();
+        columnasTabla = getColumnsNames();
+        model = new javax.swing.table.DefaultTableModel(getData(), columnasTabla) {
+            Class[] types = new Class[]{
+                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+            };
+            boolean[] canEdit = new boolean[]{
+                true, false, false, false
+            };
+
+            @Override
+            public Class getColumnClass(int columnIndex) {
+                return types[columnIndex];
+            }
+
+            @Override
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit[columnIndex];
+            }
+        };
         initComponents();
+    }
+
+    private Object[] getColumnsNames() {
+        return new Object[]{"Seleccionar", "Id", "Nombre", "Activo"};
+    }
+
+    private Object[][] getData() {
+        Object[][] obj = new Object[perfil.size()][columnasTabla.length];
+        for (int i = 0; i < perfil.size(); i++) {
+            obj[i][0] = false;
+            obj[i][1] = perfil.get(i).getId();
+            obj[i][2] = perfil.get(i).getNombre();
+            obj[i][3] = perfil.get(i).isActivo();
+        }
+        return obj;
+    }
+
+    private void refrescar() {
+        try {
+            if (perfil != null) {
+                perfil.clear();
+            }
+            perfil = servicio.seleccionarTodos();
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelDetalleEvento.class
+                    .getName()).log(Level.SEVERE, null, ex);
+            JOptionPane.showMessageDialog(padre,
+                    "Error cargando los datos", "Error cargando los datos", JOptionPane.ERROR_MESSAGE);
+        }
     }
 
     /**
@@ -29,35 +92,11 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
         jButton1 = new javax.swing.JButton();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Seleccionar", "Id", "Nombre", "Activo"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Boolean.class
-            };
-            boolean[] canEdit = new boolean [] {
-                true, false, false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        jTable1.setModel(model);
         jScrollPane1.setViewportView(jTable1);
-        jTable1.getColumnModel().getColumn(0).setResizable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -86,16 +125,24 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
 
         jButton3.setText("Eliminar");
 
+        jButton4.setText("Agregar");
+
+        jButton5.setText("Eliminar Todos");
+
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jButton5)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton3)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(10, 10, 10)
                 .addComponent(jButton1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jButton4)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton2)
                 .addContainerGap())
         );
@@ -106,7 +153,9 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
                 .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButton3)
                     .addComponent(jButton2)
-                    .addComponent(jButton1)))
+                    .addComponent(jButton1)
+                    .addComponent(jButton4)
+                    .addComponent(jButton5)))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
@@ -134,11 +183,12 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
+    private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
