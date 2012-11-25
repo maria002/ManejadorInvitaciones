@@ -47,10 +47,17 @@ public class Conexion {
     }
 
     public static void conectar() throws SQLException {
+
+        //aqui creamos un datasource para iniciar la conexion 
+        OracleDataSource ods = new OracleDataSource();
+        //aqui creamos un url de conexion 
+        ods.setURL("jdbc:oracle:thin:DBINVITACIONES/musica59@Owner-HP:1521:XE");
+
 //      aqui creamos un datasource para iniciar la conexion 
         ods = new OracleDataSource();
         // aqui creamos un url de conexion 
         ods.setURL("jdbc:oracle:thin:" + datosConexion.get("BD") + "/" + datosConexion.get("CLAVE") + "@" + datosConexion.get("SERVIDOR") + ":" + datosConexion.get("PUERTO") + ":XE");
+
         conn = ods.getConnection();
         st = conn.createStatement();
     }

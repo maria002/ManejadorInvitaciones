@@ -1,5 +1,12 @@
 package com.itla.vista.administrador;
 
+import com.itla.modelo.Invitado;
+import com.itla.servicios.ServicioInvitado;
+import java.awt.Window;
+import java.sql.SQLException;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
 /**
@@ -8,16 +15,50 @@ import javax.swing.JOptionPane;
  */
 public class PanelInvitado extends javax.swing.JPanel {
 
-    /**
-     * Creates new form panel
-     */
+    private Window padre;
+    private ServicioInvitado servicio = new ServicioInvitado();
+    private List<Invitado> listaInvitado;
+    private int modificandoIdx = 0;
+
     public PanelInvitado() {
+        super();
         initComponents();
     }
-    
+
+    public PanelInvitado(Window padre) {
+        super();
+        this.padre = padre;
+        initComponents();
+    }
+
+    public PanelInvitado(Window padre, List<Invitado> invitados) {
+        this(padre);
+        this.listaInvitado = invitados;
+        if (invitados != null && invitados.size() == 1) {
+            btnGuardarContinuar.setVisible(false);
+            cargarData();
+        } else if (invitados != null && invitados.size() > 0) {
+            cargarData();
+        }
+    }
+
+    private void cargarData() {
+        txtId.setText(String.valueOf(listaInvitado.get(modificandoIdx).getId()));
+        txtNombre.setText(listaInvitado.get(modificandoIdx).getNombre());
+        txtApellido.setText(listaInvitado.get(modificandoIdx).getApellido());
+        txtTelefono.setText(listaInvitado.get(modificandoIdx).getTelefono());
+        txtDireccion.setText(listaInvitado.get(modificandoIdx).getDireccion());
+        if(listaInvitado.get(modificandoIdx).getSexo().equalsIgnoreCase("M")){
+            rdBtnMasculino.setSelected(true);
+        }else{
+            rdBtnFemenino.setSelected(true);
+        }
+        chkActivo.setSelected(listaInvitado.get(modificandoIdx).isActivo());
+    }
+
     public boolean validar() {
         boolean tmp = true;
-        if (txtNombre.getText().isEmpty()){
+        if (txtNombre.getText().isEmpty()) {
             JOptionPane.showMessageDialog(null, "El campo Nombre vacio");
             tmp = false;
         }
@@ -33,7 +74,7 @@ public class PanelInvitado extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(null, "El campo direccion vacio");
             tmp = false;
         }
-        if (btnGroupSexo.getSelection() == null){
+        if (btnGroupSexo.getSelection() == null) {
             JOptionPane.showMessageDialog(null, "Debe seleccionar una opcion");
             tmp = false;
         }
@@ -41,11 +82,20 @@ public class PanelInvitado extends javax.swing.JPanel {
     }
 
     private void guardar() {
-         if (validar()){
-            JOptionPane.showMessageDialog(null, "Datos Guardados");
-        }   
+        Invitado invitado = new Invitado(0, chkActivo.isSelected(), txtNombre.getText(), txtApellido.getText(), txtTelefono.getText(), txtDireccion.getText(), btnGroupSexo.getSelection().getActionCommand());
+        if (!txtId.getText().isEmpty()) {
+            invitado.setId(Integer.parseInt(txtId.getText()));
+        }
+        try {
+            servicio.insertar(invitado);
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelInvitado.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JOptionPane.showMessageDialog(padre, "Datos insertados correctamente", "Datos insertados", JOptionPane.INFORMATION_MESSAGE);
+        txtNombre.requestFocus();
+
     }
-    
+
     private void limpiarCampos() {
         txtNombre.setText("");
         txtApellido.setText("");
@@ -53,8 +103,8 @@ public class PanelInvitado extends javax.swing.JPanel {
         txtDireccion.setText("");
         btnGroupSexo.clearSelection();
         chkActivo.setSelected(true);
-   }
-    
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -73,7 +123,7 @@ public class PanelInvitado extends javax.swing.JPanel {
         txtNombre = new javax.swing.JTextField();
         txtApellido = new javax.swing.JTextField();
         rdBtnMasculino = new javax.swing.JRadioButton();
-        rdBtn = new javax.swing.JRadioButton();
+        rdBtnFemenino = new javax.swing.JRadioButton();
         txtTelefono = new javax.swing.JFormattedTextField();
         txtDireccion = new javax.swing.JTextField();
         lblId = new javax.swing.JLabel();
@@ -94,15 +144,18 @@ public class PanelInvitado extends javax.swing.JPanel {
 
         lblSexo.setText("Sexo:*");
 
+        rdBtnMasculino.setActionCommand("M");
         btnGroupSexo.add(rdBtnMasculino);
         rdBtnMasculino.setText("Masculino");
 
-        btnGroupSexo.add(rdBtn);
-        rdBtn.setText("Femenino");
+        rdBtnFemenino.setActionCommand("F");
+        btnGroupSexo.add(rdBtnFemenino);
+        rdBtnFemenino.setText("Femenino");
 
         lblId.setText("Id:");
 
         txtId.setEditable(false);
+        txtId.setEnabled(false);
 
         btnGuardar.setText("Guardar");
         btnGuardar.addActionListener(new java.awt.event.ActionListener() {
@@ -155,7 +208,7 @@ public class PanelInvitado extends javax.swing.JPanel {
                             .addGroup(layout.createSequentialGroup()
                                 .addComponent(rdBtnMasculino, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                .addComponent(rdBtn))
+                                .addComponent(rdBtnFemenino))
                             .addComponent(txtId)
                             .addComponent(txtDireccion)))
                     .addGroup(layout.createSequentialGroup()
@@ -194,7 +247,7 @@ public class PanelInvitado extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblSexo)
                     .addComponent(rdBtnMasculino)
-                    .addComponent(rdBtn))
+                    .addComponent(rdBtnFemenino))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(chkActivo)
@@ -209,18 +262,35 @@ public class PanelInvitado extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarContinuarActionPerformed
-      guardar();
-      limpiarCampos();
+        if (validar()) {
+            //metodo para guardar
+            guardar();
+            //Limpiar los campos
+            limpiarCampos();
+        }
+        if (listaInvitado != null && listaInvitado.size() > 0 && modificandoIdx < listaInvitado.size() - 1) {
+            modificandoIdx++;
+            cargarData();
+        } else if (listaInvitado != null && modificandoIdx == listaInvitado.size() - 1) {
+            padre.dispose();
+        }
     }//GEN-LAST:event_btnGuardarContinuarActionPerformed
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-      guardar();
+        if (validar()) {
+            //metodo para guardar
+            guardar();
+            //Limpiar los campos
+            limpiarCampos();
+            //Cerrar la ventana
+            padre.dispose();
+        }
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        
+        padre.dispose();
+        //System.out.println(boton);
     }//GEN-LAST:event_btnCancelarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
     private javax.swing.ButtonGroup btnGroupSexo;
@@ -234,7 +304,7 @@ public class PanelInvitado extends javax.swing.JPanel {
     private javax.swing.JLabel lblNombre;
     private javax.swing.JLabel lblSexo;
     private javax.swing.JLabel lblTelefono;
-    private javax.swing.JRadioButton rdBtn;
+    private javax.swing.JRadioButton rdBtnFemenino;
     private javax.swing.JRadioButton rdBtnMasculino;
     private javax.swing.JTextField txtApellido;
     private javax.swing.JTextField txtDireccion;

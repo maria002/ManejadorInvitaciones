@@ -16,7 +16,7 @@ public class PanelEvento extends javax.swing.JPanel {
     private ServicioEvento servicio = new ServicioEvento();
     private List<Evento> listaEventos;
     private int modificandoIdx = 0;
-//
+
     public PanelEvento() {
         super();
         initComponents();

@@ -1,5 +1,7 @@
 package com.itla.vista.administrador;
 
+import javax.swing.JDialog;
+
 /**
  *
  * @author Maria Elena
@@ -22,22 +24,104 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        btnEventos = new javax.swing.JButton();
+        btnPerfilUsuario = new javax.swing.JButton();
+        btnUsuario = new javax.swing.JButton();
+        btnInvitados = new javax.swing.JButton();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manejador Invitaciones");
+
+        btnEventos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnEventos.setText("Manejador Eventos");
+        btnEventos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEventosActionPerformed(evt);
+            }
+        });
+
+        btnPerfilUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnPerfilUsuario.setText("Perfiles de Usuarios");
+        btnPerfilUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPerfilUsuarioActionPerformed(evt);
+            }
+        });
+
+        btnUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnUsuario.setText("Manejar Usuarios");
+        btnUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnUsuarioActionPerformed(evt);
+            }
+        });
+
+        btnInvitados.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        btnInvitados.setText("Invitados");
+        btnInvitados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInvitadosActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 829, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(btnInvitados, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnEventos)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnPerfilUsuario)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnUsuario)
+                .addContainerGap(47, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 463, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(271, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                    .addComponent(btnInvitados, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                    .addComponent(btnEventos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
+                    .addComponent(btnPerfilUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEventosActionPerformed
+        // TODO add your handling code here:
+        JDialog ventana = new JDialog();
+        ventana.add(new PanelDetalleEvento(ventana));
+        ventana.setModal(true);
+        ventana.pack();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnEventosActionPerformed
+
+    private void btnInvitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvitadosActionPerformed
+        JDialog ventana = new JDialog();
+        ventana.add(new PanelDetalleInvitado(ventana));
+        ventana.setModal(true);
+        ventana.pack();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnInvitadosActionPerformed
+
+    private void btnPerfilUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilUsuarioActionPerformed
+        JDialog ventana = new JDialog();
+        ventana.add(new PanelDetallePerfilUsuario(ventana));
+        ventana.setModal(true);
+        ventana.pack();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_btnPerfilUsuarioActionPerformed
+
+    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
+       
+    }//GEN-LAST:event_btnUsuarioActionPerformed
 
     /**
      * @param args the command line arguments
@@ -74,5 +158,9 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnEventos;
+    private javax.swing.JButton btnInvitados;
+    private javax.swing.JButton btnPerfilUsuario;
+    private javax.swing.JButton btnUsuario;
     // End of variables declaration//GEN-END:variables
 }

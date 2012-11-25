@@ -6,12 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
- * @author Maria, Katerina,
+ * @author Maria, Katerina, Samuel
  */
 public class PerfilUsuarioAccesoDatos {
 
@@ -45,59 +43,34 @@ public class PerfilUsuarioAccesoDatos {
             modificar(perfil);
             return;
         }
-        try {
-            Conexion.conectar();
-            PreparedStatement ps = Conexion.conn.prepareStatement("INSERT INTO perfil_usuario(id, nombre, activo) VALUES (sec_Id_Perfil_Usuario.nextval, ?,?)");
-            ps.setString(1, perfil.getNombre());
-            ps.setString(2, String.valueOf(Conexion.convertirBooleanAChar(perfil.isActivo())));
-            Conexion.conn.setAutoCommit(false);
-            ps.executeUpdate();
-            Conexion.conn.commit();
-        } catch (SQLException ex) {
-            Conexion.conn.rollback();
-            Logger.getLogger(PerfilUsuarioAccesoDatos.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            Conexion.conn.setAutoCommit(true);
-            Conexion.desconectar();
-        }
+
+        Conexion.conectar();
+        PreparedStatement ps = Conexion.conn.prepareStatement("INSERT INTO perfil_usuario(id, nombre, activo) VALUES (sec_Id_Perfil_Usuario.nextval, ?,?)");
+        ps.setString(1, perfil.getNombre());
+        ps.setString(2, String.valueOf(Conexion.convertirBooleanAChar(perfil.isActivo())));
+        ps.executeUpdate();
+        Conexion.desconectar();
     }
 
     public static void modificar(PerfilUsuario perfil) throws SQLException {
-        try {
-            if (perfil.getId() <= 0) {
-                throw new IllegalArgumentException("No se puede modificar un registro con id 0");
-            }
-            Conexion.conectar();
-            PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE [erfil_usiario SET NOMBRE = ?, ACTIVO = ?, WHERE ID = ?");
-            ps.setString(1, perfil.getNombre());
-            ps.setString(2, String.valueOf(Conexion.convertirBooleanAChar(perfil.isActivo())));
-            ps.setInt(3, perfil.getId());
-            Conexion.conn.setAutoCommit(false);
-            ps.executeUpdate();
-            Conexion.conn.commit();
-        } catch (SQLException ex) {
-            Conexion.conn.rollback();
-            Logger.getLogger(PerfilUsuarioAccesoDatos.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            Conexion.conn.setAutoCommit(true);
-            Conexion.desconectar();
+        if (perfil.getId() <= 0) {
+            throw new IllegalArgumentException("No se puede modificar un registro con id 0");
         }
+        Conexion.conectar();
+        PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE perfil_usuario SET NOMBRE = ?, ACTIVO = ? WHERE ID = ?");
+        ps.setString(1, perfil.getNombre());
+        ps.setString(2, String.valueOf(Conexion.convertirBooleanAChar(perfil.isActivo())));
+        ps.setInt(3, perfil.getId());
+        ps.executeUpdate();
+        Conexion.desconectar();
     }
 
     public static void eliminar(int id) throws SQLException {
-        try {
-            Conexion.conectar();
-            PreparedStatement ps = Conexion.conn.prepareStatement("DELETE FROM perfil_usuario WHERE ID= ?");
-            ps.setInt(1, id);
-            Conexion.conn.setAutoCommit(false);
-            ps.executeUpdate();
-            Conexion.conn.commit();
-        } catch (SQLException ex) {
-            Conexion.conn.rollback();
-            Logger.getLogger(PerfilUsuarioAccesoDatos.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            Conexion.conn.setAutoCommit(true);
-            Conexion.desconectar();
-        }
+        Conexion.conectar();
+        PreparedStatement ps = Conexion.conn.prepareStatement("DELETE FROM perfil_usuario WHERE ID= ?");
+        ps.setInt(1, id);
+        Conexion.conn.setAutoCommit(false);
+        ps.executeUpdate();
+        Conexion.desconectar();
     }
 }

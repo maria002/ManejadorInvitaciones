@@ -4,6 +4,7 @@ import com.itla.modelo.PerfilUsuario;
 import com.itla.servicios.ServicioPerfilUsuario;
 import java.awt.Window;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -14,11 +15,37 @@ import javax.swing.JOptionPane;
  */
 public class PanelPerfilUsuario extends javax.swing.JPanel {
 
-    private ServicioPerfilUsuario servicio = new ServicioPerfilUsuario();
     private Window padre;
+    private ServicioPerfilUsuario servicio = new ServicioPerfilUsuario();
+    private List<PerfilUsuario> listaPerfil;
+    private int modificandoIdx = 0;
 
     public PanelPerfilUsuario() {
+        super();
         initComponents();
+    }
+
+    public PanelPerfilUsuario(Window padre) {
+        super();
+        this.padre = padre;
+        initComponents();
+    }
+
+    public PanelPerfilUsuario(Window padre, List<PerfilUsuario> perfiles) {
+        this(padre);
+        this.listaPerfil = perfiles;
+        if (perfiles != null && perfiles.size() == 1) {
+            btnGuardarContinuar.setVisible(false);
+            cargarData();
+        } else if (perfiles != null && perfiles.size() > 0) {
+            cargarData();
+        }
+    }
+
+    private void cargarData() {
+        txtId.setText(String.valueOf(listaPerfil.get(modificandoIdx).getId()));
+        txtNombre.setText(listaPerfil.get(modificandoIdx).getNombre());
+        chkActivo.setSelected(listaPerfil.get(modificandoIdx).isActivo());
     }
 
     public boolean validar() {
@@ -32,17 +59,16 @@ public class PanelPerfilUsuario extends javax.swing.JPanel {
 
     private void guardar() {
         PerfilUsuario perfil = new PerfilUsuario(0, chkActivo.isSelected(), txtNombre.getText());
-        try {
-            if (!txtId.getText().isEmpty()) {
-                perfil.setId(Integer.parseInt(txtId.getText()));
-            }
-            servicio.insertar(perfil);
-            JOptionPane.showMessageDialog(padre, "Datos insertados correctamente", "Datos insertados", JOptionPane.INFORMATION_MESSAGE);
-            txtNombre.requestFocus();
-        } catch (SQLException ex) {
-            Logger.getLogger(PanelEvento.class.getName()).log(Level.SEVERE, null, ex);
-            JOptionPane.showMessageDialog(null, "Error al guardar el registro en la base de datos", "Error guardando", JOptionPane.ERROR_MESSAGE);
+        if (!txtId.getText().isEmpty()) {
+            perfil.setId(Integer.parseInt(txtId.getText()));
         }
+        try {
+            servicio.insertar(perfil);
+        } catch (SQLException ex) {
+            Logger.getLogger(PanelPerfilUsuario.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        JOptionPane.showMessageDialog(padre, "Datos insertados correctamente", "Datos insertados", JOptionPane.INFORMATION_MESSAGE);
+        txtNombre.requestFocus();
     }
 
     private void limpiarCampos() {
@@ -71,6 +97,7 @@ public class PanelPerfilUsuario extends javax.swing.JPanel {
         lblId.setText("Id:");
 
         txtId.setEditable(false);
+        txtId.setEnabled(false);
 
         lblActivo.setText("Activo*");
 
@@ -151,22 +178,35 @@ public class PanelPerfilUsuario extends javax.swing.JPanel {
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        padre.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
+
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // TODO add your handling code here:
+        //metodo valida formulario
         if (validar()) {
             //metodo para guardar
             guardar();
         }
+        //Limpiar los campos
         limpiarCampos();
+        //Cerrar la ventana
+        padre.dispose();
     }//GEN-LAST:event_btnGuardarActionPerformed
 
-    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
-        // TODO add your handling code here:
-        padre.dispose();
-    }//GEN-LAST:event_btnCancelarActionPerformed
-
     private void btnGuardarContinuarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarContinuarActionPerformed
-        // TODO add your handling code here:  
+         if (validar()) {
+            //metodo para guardar
+            guardar();
+        }
+        //Limpiar los campos
+        limpiarCampos();
+        if (listaPerfil != null && listaPerfil.size() > 0 && modificandoIdx < listaPerfil.size() - 1) {
+            modificandoIdx++;
+            cargarData();
+        } else if (listaPerfil != null && modificandoIdx == listaPerfil.size() - 1) {
+            padre.dispose();
+        }
     }//GEN-LAST:event_btnGuardarContinuarActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

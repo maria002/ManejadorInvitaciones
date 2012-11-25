@@ -1,6 +1,5 @@
 package com.itla.sistema;
 
-import com.itla.data.Conexion;
 import com.itla.vista.administrador.ContenedorPrincipal;
 
 /**
@@ -21,6 +20,7 @@ public class Sistema {
         }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
             public void run() {
                 new ContenedorPrincipal().setVisible(true);
                

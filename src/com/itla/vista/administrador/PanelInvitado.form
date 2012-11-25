@@ -42,7 +42,7 @@
                           <Group type="102" alignment="0" attributes="0">
                               <Component id="rdBtnMasculino" min="-2" pref="89" max="-2" attributes="0"/>
                               <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Component id="rdBtn" min="-2" max="-2" attributes="0"/>
+                              <Component id="rdBtnFemenino" min="-2" max="-2" attributes="0"/>
                           </Group>
                           <Component id="txtId" max="32767" attributes="0"/>
                           <Component id="txtDireccion" alignment="0" max="32767" attributes="0"/>
@@ -93,7 +93,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="lblSexo" alignment="3" min="-2" max="-2" attributes="0"/>
                   <Component id="rdBtnMasculino" alignment="3" min="-2" max="-2" attributes="0"/>
-                  <Component id="rdBtn" alignment="3" min="-2" max="-2" attributes="0"/>
+                  <Component id="rdBtnFemenino" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace type="unrelated" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="3" attributes="0">
@@ -148,14 +148,20 @@
         </Property>
         <Property name="text" type="java.lang.String" value="Masculino"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="rdBtnMasculino.setActionCommand(&quot;M&quot;);"/>
+      </AuxValues>
     </Component>
-    <Component class="javax.swing.JRadioButton" name="rdBtn">
+    <Component class="javax.swing.JRadioButton" name="rdBtnFemenino">
       <Properties>
         <Property name="buttonGroup" type="javax.swing.ButtonGroup" editor="org.netbeans.modules.form.RADComponent$ButtonGroupPropertyEditor">
           <ComponentRef name="btnGroupSexo"/>
         </Property>
         <Property name="text" type="java.lang.String" value="Femenino"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="rdBtnFemenino.setActionCommand(&quot;F&quot;);"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JFormattedTextField" name="txtTelefono">
     </Component>
@@ -169,6 +175,7 @@
     <Component class="javax.swing.JTextField" name="txtId">
       <Properties>
         <Property name="editable" type="boolean" value="false"/>
+        <Property name="enabled" type="boolean" value="false"/>
       </Properties>
     </Component>
     <Component class="javax.swing.JButton" name="btnGuardar">
