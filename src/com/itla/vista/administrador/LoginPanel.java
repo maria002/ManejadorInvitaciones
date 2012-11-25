@@ -1,20 +1,23 @@
 package com.itla.vista.administrador;
 
+import com.itla.modelo.Usuario;
+import com.itla.servicios.ServicioUsuario;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 /**
  *
  * @author Maria Elena
- * 
+ *
  */
 public class LoginPanel extends javax.swing.JPanel {
 
     private JFrame padre;
+    private ServicioUsuario servicio = new ServicioUsuario();
 
-    /**
-     * Creates new form LoginPanel
-     */
     public LoginPanel() {
         initComponents();
     }
@@ -103,17 +106,27 @@ public class LoginPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_btnCancelarActionPerformed
 
     private void btnIniciarSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnIniciarSesionActionPerformed
+        Usuario usuarios = null;
         if (txtUsuario.getText().isEmpty()) {
             JOptionPane.showMessageDialog(padre, "El campo usuario esta vacio");
             txtUsuario.requestFocus();
-            return;
-        }
-        if (String.valueOf(txtClave.getPassword()).isEmpty()) {
+        } else if (String.valueOf(txtClave.getPassword()).isEmpty()) {
             JOptionPane.showMessageDialog(padre, "El campo clave esta vacio");
             txtClave.requestFocus();
-            return;
+        } else {
+            try {
+                usuarios = servicio.autenticar(txtUsuario.getText(), String.valueOf(txtClave.getPassword()));
+                System.out.println(usuarios);
+                if (usuarios != null) {
+                    padre.dispose();
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (usuarios == null) {
+                JOptionPane.showMessageDialog(padre, "Usuario Invalido", "Usuario y Clave no coinciden", JOptionPane.WARNING_MESSAGE);
+            }
         }
-        padre.dispose();
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

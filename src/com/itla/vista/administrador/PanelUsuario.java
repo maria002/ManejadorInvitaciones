@@ -41,6 +41,10 @@ public class PanelUsuario extends javax.swing.JPanel {
         } catch (SQLException ex) {
             Logger.getLogger(PanelUsuario.class.getName()).log(Level.SEVERE, null, ex);
         }
+        if(objs == null){
+            JOptionPane.showMessageDialog(padre, "No hay perfiles creados. Por favor agregue al menos un perfil.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         initComponents();
     }
 
@@ -58,14 +62,18 @@ public class PanelUsuario extends javax.swing.JPanel {
         } else if (usuarios != null && usuarios.size() > 0) {
             cargarData();
         }
+        txtCuenta.setEditable(false);
+        txtCuenta.setEnabled(false);
     }
 
     private void cargarData() {
         txtID.setText(String.valueOf(listaUsuario.get(modificandoIdx).getId()));
         txtNombre.setText(listaUsuario.get(modificandoIdx).getNombre());
-        txtApellido.setText(listaUsuario.get(modificandoIdx).getNombre());
+        txtApellido.setText(listaUsuario.get(modificandoIdx).getApellido());
         txtCuenta.setText(listaUsuario.get(modificandoIdx).getCuenta());
-        txtpassword.setText(listaUsuario.get(modificandoIdx).getClave());
+        txtpassword.setText(null);
+        lblClave.setText("Clave: ");
+        lblCuenta.setText("Cuenta: ");
         chkActivo.setSelected(listaUsuario.get(modificandoIdx).isActivo());
     }
 
@@ -80,7 +88,7 @@ public class PanelUsuario extends javax.swing.JPanel {
         } else if (txtCuenta.getText().isEmpty()) {
             valido = false;
             JOptionPane.showMessageDialog(null, "Debe insertar su cuenta");
-        } else if (txtpassword.getPassword().length == 0) {
+        } else if (modificandoIdx > 1 && txtpassword.getPassword().length == 0) {
             valido = false;
             JOptionPane.showMessageDialog(null, "Ingrese su clave");
         } else if (cmbPerfilUsuario.getSelectedItem().toString().isEmpty()) {
@@ -93,7 +101,7 @@ public class PanelUsuario extends javax.swing.JPanel {
     private boolean guardar() {
         boolean guadado = false;
         try {
-            Usuario usuario = new Usuario(0, chkActivo.isSelected(), txtNombre.getText(), txtApellido.getText(), txtCuenta.getText(), txtpassword.getPassword().toString(), ((PerfilUsuario) cmbPerfilUsuario.getSelectedItem()));
+            Usuario usuario = new Usuario(0, chkActivo.isSelected(), txtNombre.getText(), txtApellido.getText(), txtCuenta.getText(), String.valueOf(txtpassword.getPassword()), ((PerfilUsuario) cmbPerfilUsuario.getSelectedItem()));
             if (!txtID.getText().isEmpty()) {
                 usuario.setId(Integer.parseInt(txtID.getText()));
             }

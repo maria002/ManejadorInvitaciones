@@ -1,7 +1,7 @@
 package com.itla.data;
 //cambios samuel
-import com.itla.modelo.Evento;
 import com.itla.modelo.Invitado;
+import com.sun.xml.internal.bind.v2.model.core.ID;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -78,17 +78,17 @@ public class InvitadoAcessoDatos {
         Conexion.desconectar();
     }
     
-     public static Invitado SeleccionarInvitadosEventos(Evento evento) throws SQLException {
+     public static List<Invitado> SeleccionarPorNombreApellido(String nombre, String apellido) throws SQLException {
         Conexion.conectar();
-        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM evento WHERE ID_EVENTO = ?");
-        //ps.setInt(1, id);
+        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM invitado WHERE nombre like ? OR apellido like ?");
+        ps.setString(1, "%"+nombre+"%");
+        ps.setString(2, "%"+apellido+"%");
         ResultSet rs = ps.executeQuery();
-        Invitado invitado = null;
+        ArrayList<Invitado> invitados = new ArrayList<>();
         while (rs.next()) {
-            invitado = new Invitado(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")), rs.getString("nombre"), rs.getString("apellido"), rs.getString("telefono"), rs.getString("Direccion"), rs.getString("sexo"));
+            invitados.add(new Invitado(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")), rs.getString("nombre"), rs.getString("apellido"), rs.getString("telefono"), rs.getString("Direccion"), rs.getString("sexo")));
         }
         Conexion.desconectar();
-        return invitado;
+        return invitados;
     }
-
 }

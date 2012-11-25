@@ -85,10 +85,7 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
                 }
             }
         });
-
         btnEliminarTodos.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
-
     }
 
     private Object[] getColumnsNames() {
@@ -233,8 +230,6 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
         ventana.setVisible(true);
         btnRefrescar();
         refrescarTabla();
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
-
     }
 
     private void abrirDetalle(List<Usuario> usuarios) {

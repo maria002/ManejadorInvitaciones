@@ -51,6 +51,7 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
         };
         initComponents();
     }
+    
     public PanelDetallePerfilUsuario(Window padre){
         this();
         this.padre = padre;
@@ -84,7 +85,6 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
             }
         });
         btnEliminarTodo.setEnabled(((DefaultTableModel) tablaPerfil.getModel()).getRowCount() > 0);
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaPerfil.getModel()).getRowCount() > 0);
     }
     
     private Object[] getColumnsNames() {
@@ -115,6 +115,7 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
                     "Error cargando los datos", "Error cargando los datos", JOptionPane.ERROR_MESSAGE);
         }
     }
+    
     private void refrescarTabla() {
         ((DefaultTableModel) tablaPerfil.getModel()).setDataVector(getData(), columnasTabla);
         btnEliminarTodo.setEnabled(((DefaultTableModel) tablaPerfil.getModel()).getRowCount() > 0);
@@ -140,7 +141,6 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
         }
         btnModificar.setEnabled(enable);
         btnEliminar.setEnabled(enable);
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaPerfil.getModel()).getRowCount() > 0);
     }
     private void modificar() {
         ArrayList<PerfilUsuario> perfiles = new ArrayList<>();
@@ -166,7 +166,6 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
             refrescar();
             refrescarTabla();
         }
-
         habilitarModificarEliminar();
     }
     
@@ -232,7 +231,6 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
         ventana.setVisible(true);
         refrescar();
         refrescarTabla();
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaPerfil.getModel()).getRowCount() > 0);
     }
     private void abrirDetalle(List<PerfilUsuario> perfiles) {
         if (perfiles == null || perfiles.isEmpty()) {

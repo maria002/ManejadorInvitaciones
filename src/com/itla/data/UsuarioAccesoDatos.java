@@ -6,8 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -40,6 +38,10 @@ public class UsuarioAccesoDatos {
     }
 
     public static void insertar(Usuario usuario) throws SQLException {
+        if (usuario.getId() > 0) {
+            modificar(usuario);
+            return;
+        }
         try {
             Conexion.conectar();
             PreparedStatement ps = Conexion.conn.prepareStatement("Insert into Usuario(Id, Nombre, Apellido, Cuenta, Clave, Activo, ID_PERFIL_USUARIO) values(sec_IdUsuario.nextVal, ?, ?, ?, ?, ?, ?)");
@@ -49,62 +51,64 @@ public class UsuarioAccesoDatos {
             ps.setString(4, usuario.getClave());
             ps.setString(5, String.valueOf(Conexion.convertirBooleanAChar(usuario.isActivo())));
             ps.setInt(6, usuario.getPerfilUsuario().getId());
-            Conexion.conn.setAutoCommit(false);
             ps.executeUpdate();
-            Conexion.conn.commit();
-        } catch (SQLException ex) {
-            Conexion.conn.rollback();
-            Logger.getLogger(UsuarioAccesoDatos.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            Conexion.conn.setAutoCommit(true);
             Conexion.desconectar();
         }
     }
 
     public static void modificar(Usuario usuario) throws SQLException {
+        if (usuario.getId() <= 0) {
+            throw new IllegalArgumentException("No se puede modificar un registro con id <= 0");
+        }
         try {
-            if (usuario.getId() <= 0) {
-                throw new IllegalArgumentException("No se puede modificar un registro con id <= 0");
-            }
             Conexion.conectar();
-            PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE Usuario SET nombre = ?, Apellido = ?, Cuenta = ?, Clave = ?, Activo = ?, Id_Perfil_Usuario = ? WHERE id = ?");
-            ps.setString(1, usuario.getNombre());
-            ps.setString(2, usuario.getApellido());
-            ps.setString(3, usuario.getCuenta());
-            ps.setString(4, usuario.getClave());
-            ps.setString(5, String.valueOf(Conexion.convertirBooleanAChar(usuario.isActivo())));
-            ps.setInt(6, usuario.getPerfilUsuario().getId());
-            ps.setInt(7, usuario.getId());
-            Conexion.conn.setAutoCommit(false);
+            String query = "UPDATE Usuario SET nombre = ?, Apellido = ?,  Activo = ?, Id_Perfil_Usuario = ? WHERE id = ?";
+            if(usuario.getClave() != null && !usuario.getClave().isEmpty()){
+                query = "UPDATE Usuario SET nombre = ?, Apellido = ?, Clave = ?, Activo = ?, Id_Perfil_Usuario = ? WHERE id = ?";
+            }
+            int idx = 0;
+            PreparedStatement ps = Conexion.conn.prepareStatement(query);
+            ps.setString(++idx, usuario.getNombre());
+            ps.setString(++idx, usuario.getApellido());
+            if(usuario.getClave() != null && !usuario.getClave().isEmpty()){
+                ps.setString(++idx, usuario.getClave());
+            }
+            ps.setString(++idx, String.valueOf(Conexion.convertirBooleanAChar(usuario.isActivo())));
+            ps.setInt(++idx, usuario.getPerfilUsuario().getId());
+            ps.setInt(++idx, usuario.getId());
             ps.executeUpdate();
-            Conexion.conn.commit();
-        } catch (SQLException ex) {
-            Conexion.conn.rollback();
-            Logger.getLogger(UsuarioAccesoDatos.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            Conexion.conn.setAutoCommit(true);
             Conexion.desconectar();
         }
     }
 
     public static void eliminar(int id) throws SQLException {
+        if (id <= 0) {
+            throw new IllegalArgumentException("No se puede eliminar un registro con id <= 0");
+        }
         try {
-            if (id <= 0) {
-                throw new IllegalArgumentException("No se puede eliminar un registro con id <= 0");
-            }
             Conexion.conectar();
             PreparedStatement ps = Conexion.conn.prepareStatement("DELETE FROM Usuario WHERE id = ?");
             ps.setInt(1, id);
-            Conexion.conn.setAutoCommit(false);
             ps.executeUpdate();
-            Conexion.conn.commit();
-        } catch (SQLException ex) {
-            Conexion.conn.rollback();
-            Logger.getLogger(UsuarioAccesoDatos.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            Conexion.conn.setAutoCommit(true);
             Conexion.desconectar();
         }
+    }
 
+    public static Usuario autenticar(String cuenta, String clave) throws SQLException {
+        Conexion.conectar();
+        PreparedStatement ps = Conexion.conn.prepareStatement("select ID, NOMBRE, APELLIDO, CUENTA, ACTIVO, ID_PERFIL_USUARIO from Usuario where cuenta = ? AND clave = ?");
+        ps.setString(1, cuenta);
+        ps.setString(2, clave);
+        ResultSet rs = ps.executeQuery();
+        Usuario usuario = null;
+        while (rs.next()) {
+            usuario = new Usuario(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")), rs.getString("Nombre"), rs.getString("Apellido"), rs.getString("Cuenta"), null, PerfilUsuarioAccesoDatos.SeleccionarPorId(rs.getInt("Id_Perfil_Usuario")));
+            System.out.println("Bienvenido");
+        }
+        Conexion.desconectar();
+        return usuario;
     }
 }

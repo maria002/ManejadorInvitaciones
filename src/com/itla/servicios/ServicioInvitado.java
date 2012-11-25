@@ -29,4 +29,7 @@ public class ServicioInvitado {
     public void eliminar(int id) throws SQLException{
         InvitadoAcessoDatos.eliminar(id);
     }
+    public ArrayList<Invitado> buscarInvitdados (String nombre, String apellido) throws SQLException{
+        return (ArrayList<Invitado>) InvitadoAcessoDatos.SeleccionarPorNombreApellido(nombre, apellido);
+    }
 }

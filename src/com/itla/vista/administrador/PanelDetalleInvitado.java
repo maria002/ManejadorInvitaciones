@@ -25,8 +25,8 @@ public class PanelDetalleInvitado extends javax.swing.JPanel {
     private Window padre;
     private ServicioInvitado servicio = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
-    DefaultTableModel model;
-    Object[] columnasTabla;
+    private DefaultTableModel model;
+    private Object[] columnasTabla;
 
     public PanelDetalleInvitado() {
         refrescar();
@@ -85,7 +85,6 @@ public class PanelDetalleInvitado extends javax.swing.JPanel {
             }
         });
         btnEliminarTodos.setEnabled(((DefaultTableModel) tablaInivtado.getModel()).getRowCount() > 0);
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaInivtado.getModel()).getRowCount() > 0);
     }
 
     private Object[] getColumnsNames() {
@@ -147,7 +146,6 @@ public class PanelDetalleInvitado extends javax.swing.JPanel {
         }
         btnModificar.setEnabled(enable);
         btnEliminar.setEnabled(enable);
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaInivtado.getModel()).getRowCount() > 0);
     }
 
     private void modificar() {
@@ -242,7 +240,6 @@ public class PanelDetalleInvitado extends javax.swing.JPanel {
         ventana.setVisible(true);
         refrescar();
         refrescarTabla();
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaInivtado.getModel()).getRowCount() > 0);
     }
 
     private void abrirDetalle(List<Invitado> eventos) {

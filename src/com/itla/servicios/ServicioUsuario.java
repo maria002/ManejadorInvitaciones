@@ -31,4 +31,7 @@ public class ServicioUsuario {
     public void eliminar(int id) throws SQLException{
         UsuarioAccesoDatos.eliminar(id);
     }
+    public Usuario autenticar(String cuenta, String clave) throws SQLException {
+        return UsuarioAccesoDatos.autenticar(cuenta, clave);
+    }
  }

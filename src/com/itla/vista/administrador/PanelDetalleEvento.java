@@ -85,7 +85,6 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
             }
         });
         btnEliminarTodos.setEnabled(((DefaultTableModel) tablaEvento.getModel()).getRowCount() > 0);
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaEvento.getModel()).getRowCount() > 0);
     }
 
     private Object[] getColumnsNames() {
@@ -144,7 +143,6 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
         }
         btnModificar.setEnabled(enable);
         btnEliminar.setEnabled(enable);
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaEvento.getModel()).getRowCount() > 0);
     }
 
     private void modificar() {
@@ -238,7 +236,6 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
         ventana.setVisible(true);
         refrescar();
         refrescarTabla();
-        btnRefrescar.setEnabled(((DefaultTableModel) tablaEvento.getModel()).getRowCount() > 0);
     }
 
     private void abrirDetalle(List<Evento> eventos) {
