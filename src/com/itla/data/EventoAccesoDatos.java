@@ -82,7 +82,22 @@ public class EventoAccesoDatos {
     public static List<Evento> seleccionarEventosDeHoy() throws SQLException {
         Conexion.conectar();
         String query = "SELECT * FROM Evento "
-                + "WHERE TO_CHAR(FECHA, 'dd') = TO_CHAR(TO_DATE('" + new SimpleDateFormat("dd/M/yyyy").format(new Date())  + "', 'DD/MM/YY'), 'DD')";
+                + "WHERE TO_CHAR(FECHA, 'dd') = TO_CHAR(TO_DATE('" + new SimpleDateFormat("dd/M/yyyy").format(new Date()) + "', 'DD/MM/YY'), 'DD')";
+        PreparedStatement ps = Conexion.conn.prepareStatement(query);
+        ResultSet rs = ps.executeQuery();
+        List<Evento> eventos = new ArrayList<>();
+        while (rs.next()) {
+            eventos.add(new Evento(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")),
+                    rs.getString("nombre"), rs.getDate("fecha"), rs.getString("ubicacion")));
+        }
+        Conexion.desconectar();
+        return eventos;
+    }
+
+    public static List<Evento> seleccionarEventosProximos() throws SQLException {
+        Conexion.conectar();
+        String query = "SELECT * FROM Evento "
+                + "WHERE TO_CHAR(FECHA, 'dd') > TO_CHAR(TO_DATE('" + new SimpleDateFormat("dd/M/yyyy").format(new Date()) + "', 'DD/MM/YY'), 'DD')";
         PreparedStatement ps = Conexion.conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
         List<Evento> eventos = new ArrayList<>();
