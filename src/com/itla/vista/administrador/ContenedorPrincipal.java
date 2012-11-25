@@ -185,7 +185,7 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
 
     private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
         JDialog ventana = new JDialog();
-        ventana.add(new PanelListadoCompleto(ventana));
+        ventana.add(new PanelListadoCompleto(ventana, null));
         ventana.setModal(true);
         ventana.pack();
         ventana.setVisible(true);
