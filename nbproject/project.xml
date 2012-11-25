@@ -6,6 +6,7 @@
             <name>ManejadorInvitaciones</name>
             <source-roots>
                 <root id="src.dir"/>
+                <root id="src.BaseDeDatos.dir" name="Base De Datos"/>
             </source-roots>
             <test-roots>
                 <root id="test.src.dir"/>

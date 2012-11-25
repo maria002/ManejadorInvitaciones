@@ -5,7 +5,7 @@ DROP TABLE USUARIO CASCADE CONSTRAINTS;
 DROP TABLE PERFIL_USUARIO CASCADE CONSTRAINTS;
 
 DROP SEQUENCE sec_Id_Perfil_Usuario;
-DROP SEQUENCE sec_IdUsuarios;
+DROP SEQUENCE sec_IdUsuario;
 DROP SEQUENCE sec_Id_evento;
 DROP SEQUENCE sec_Id_invitado;
 DROP SEQUENCE sec_Id_invitacion;
@@ -38,7 +38,7 @@ add constraint FK_UsuariosPerfilID
 foreign key (Id_Perfil_Usuario)
 references Perfil_Usuario(Id);
 
-create sequence sec_IdUsuarios
+create sequence sec_IdUsuario
 start with 1
 increment by 1;
 

@@ -27,16 +27,18 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
     private ArrayList<Usuario> usuarios;
     private DefaultTableModel model;
     private Object[] columnasTabla;
-    
+
     public PanelDetalleUsuario() {
-       btnRefrescar();
+        btnRefrescar();
         columnasTabla = getColumnsNames();
         model = new javax.swing.table.DefaultTableModel(getData(), columnasTabla) {
             Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.Object.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Boolean.class, java.lang.Integer.class,
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
             };
             boolean[] canEdit = new boolean[]{
-                true, false, false, false, false, false
+                true, false,
+                false, false, false, false, false
             };
 
             @Override
@@ -51,7 +53,7 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
         };
         initComponents();
     }
-    
+
     public PanelDetalleUsuario(Window padre) {
         this();
         this.padre = padre;
@@ -62,11 +64,11 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
                 int row = target.getSelectedRow();
                 int column = target.getSelectedColumn();
                 if (evt.getClickCount() == 1) {
-                    if(column == 0) {
-                        habilitarModificarEliminar();  
+                    if (column == 0) {
+                        habilitarModificarEliminar();
                     }
-                }else if (evt.getClickCount() == 2) {
-                    if(column <= 0) {
+                } else if (evt.getClickCount() == 2) {
+                    if (column <= 0) {
                         return;
                     }
                     target.getModel().getValueAt(row, column);
@@ -76,38 +78,38 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
                         abrirDetalle(usuarios);
                         btnRefrescar();
                         refrescarTabla();
-                    }catch (SQLException ex) {
+                    } catch (SQLException ex) {
                         Logger.getLogger(PanelDetalleUsuario.class.getName()).log(Level.SEVERE, null, ex);
                         JOptionPane.showMessageDialog(PanelDetalleUsuario.this.padre, "Error cargando el objeto seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }
         });
-        
+
         btnEliminarTodos.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
-         btnRefrescar.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
-       
+        btnRefrescar.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
+
     }
+
     private Object[] getColumnsNames() {
-        return new Object[] {"Seleccionar", "Id", "Nombre", "Apellido", "Cuenta", "Clave", "Rol", "Activo", "perfil"};  
+        return new Object[]{"Seleccionar", "Id", "Nombre", "Apellido", "Cuenta",  "Perfil Usuario", "Activo"};
     }
-    
-     private Object [] [] getData() {
-        Object [] [] obj = new Object[usuarios.size()][columnasTabla.length];
+
+    private Object[][] getData() {
+        Object[][] obj = new Object[usuarios.size()][columnasTabla.length];
         for (int i = 0; i < usuarios.size(); i++) {
-            obj[i] [0] = false;
-            obj[i] [1] = usuarios.get(i).getId();
-            obj[i] [2] = usuarios.get(i).getNombre();
-            obj[i] [3] = usuarios.get(i).getApellido();
-            obj[i] [4] = usuarios.get(i).getCuenta();
-            obj[i] [5] = usuarios.get(i).getClave();
-            obj[i] [6] = usuarios.get(i).getPerfilUsuario().getNombre();
-            obj[i] [7] = usuarios.get(i).isActivo();
-        }  
+            obj[i][0] = false;
+            obj[i][1] = usuarios.get(i).getId();
+            obj[i][2] = usuarios.get(i).getNombre();
+            obj[i][3] = usuarios.get(i).getApellido();
+            obj[i][4] = usuarios.get(i).getCuenta();
+            obj[i][5] = usuarios.get(i).getPerfilUsuario().getNombre();
+            obj[i][6] = usuarios.get(i).isActivo();
+        }
         return obj;
     }
-    
-     private void btnRefrescar() {
+
+    private void btnRefrescar() {
         try {
             if (usuarios != null) {
                 usuarios.clear();
@@ -120,54 +122,55 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
                     "Error cargando los datos", "Error cargando los datos", JOptionPane.ERROR_MESSAGE);
         }
     }
-     private void refrescarTabla() {
-         ((DefaultTableModel) tablaUsuario.getModel()).setDataVector(getData(), columnasTabla);
-         btnEliminarTodos.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
-     }
-     
-     private void habilitarModificarEliminar() {
-         boolean enable = false;
-         for(int i = 0; i < model.getRowCount(); i++) {
-             if ((boolean) model.getValueAt(i, 0)) {
+
+    private void refrescarTabla() {
+        ((DefaultTableModel) tablaUsuario.getModel()).setDataVector(getData(), columnasTabla);
+        btnEliminarTodos.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
+    }
+
+    private void habilitarModificarEliminar() {
+        boolean enable = false;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if ((boolean) model.getValueAt(i, 0)) {
                 enable = true;
                 break;
-             } 
-         }
-         btnModificar.setEnabled(enable);
-         btnEliminar.setEnabled(enable);
-         btnRefrescar.setEnabled(enable);
-     }
-     
-     private void btnModificar() {
-         ArrayList<Usuario> usuarios = new ArrayList<>();
-         HashSet<Integer> idNoModificadosPorErrores = new HashSet<>();
-         for (int i = 0; i < model.getRowCount(); i++) {
-             if ((boolean) model.getValueAt(i, 0)){
-                 try {
-                     usuarios.add(servicio.SeleccionarPorId((Integer) model.getValueAt(i, 1)));
-                 } catch(SQLException ex) {
-                     Logger.getLogger(PanelDetalleUsuario.class
-                             .getName()).log(Level.SEVERE, null, ex);
-                     idNoModificadosPorErrores.add(i);
-                 }
-             }
-         }
-     
-         if (idNoModificadosPorErrores.size() > 0) {
+            }
+        }
+        btnModificar.setEnabled(enable);
+        btnEliminar.setEnabled(enable);
+        btnRefrescar.setEnabled(enable);
+    }
+
+    private void btnModificar() {
+        ArrayList<Usuario> usuarios = new ArrayList<>();
+        HashSet<Integer> idNoModificadosPorErrores = new HashSet<>();
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if ((boolean) model.getValueAt(i, 0)) {
+                try {
+                    usuarios.add(servicio.SeleccionarPorId((Integer) model.getValueAt(i, 1)));
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelDetalleUsuario.class
+                            .getName()).log(Level.SEVERE, null, ex);
+                    idNoModificadosPorErrores.add(i);
+                }
+            }
+        }
+
+        if (idNoModificadosPorErrores.size() > 0) {
             JOptionPane.showMessageDialog(padre, "Los usuarios id: "
-                    + idNoModificadosPorErrores + "No podran ser modificados debido a problemas en el servidor", "Error para mdificar", 
+                    + idNoModificadosPorErrores + "No podran ser modificados debido a problemas en el servidor", "Error para mdificar",
                     JOptionPane.WARNING_MESSAGE);
         }
-     
+
         if (!usuarios.isEmpty()) {
             abrirDetalle(usuarios);
             btnRefrescar();
             refrescarTabla();
         }
         habilitarModificarEliminar();
-     }  
-  
-     private void Eliminar() {
+    }
+
+    private void Eliminar() {
         int opcion = JOptionPane.showConfirmDialog(padre, "Realmente desea eliminar este usuario?",
                 "Confirmar Eliminacion", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
@@ -193,9 +196,9 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
             JOptionPane.showMessageDialog(padre, "Usuarios eliminados exitosamente", "Usuario Eliminado", JOptionPane.INFORMATION_MESSAGE);
             habilitarModificarEliminar();
         }
-    }  
-         
-      public void btnEliminarTodos() {
+    }
+
+    public void btnEliminarTodos() {
         int opcion = JOptionPane.showConfirmDialog(padre, "Realmente desea eliminar TODOS los usuarios?",
                 "Confirmar Eliminacion", JOptionPane.WARNING_MESSAGE, JOptionPane.YES_NO_OPTION);
         if (opcion == JOptionPane.YES_OPTION) {
@@ -221,7 +224,7 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
             habilitarModificarEliminar();
         }
     }
-     
+
     private void abrirDetalle() {
         JDialog ventana = new JDialog();
         ventana.add(new PanelUsuario(ventana));
@@ -231,8 +234,9 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
         btnRefrescar();
         refrescarTabla();
         btnRefrescar.setEnabled(((DefaultTableModel) tablaUsuario.getModel()).getRowCount() > 0);
-        
+
     }
+
     private void abrirDetalle(List<Usuario> usuarios) {
         if (usuarios == null || usuarios.isEmpty()) {
             abrirDetalle();
@@ -243,8 +247,8 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
         ventana.pack();
         ventana.setVisible(true);
     }
-     
-     /**
+
+    /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
      * regenerated by the Form Editor.
@@ -262,33 +266,12 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
         btnAgregar = new javax.swing.JButton();
         btnModificar = new javax.swing.JButton();
 
-        tablaUsuario.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-
-            },
-            new String [] {
-                "Seleccionar", "Id", "Nombre", "Apellido", "Cuenta", "Clave", "Rol", "Activo"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.Boolean.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false, true, true, true, true, true, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
+        tablaUsuario.setModel(model);
         scrolPaneUsuario.setViewportView(tablaUsuario);
         tablaUsuario.getColumnModel().getColumn(0).setResizable(false);
 
         btnEliminarTodos.setText("Eliminar Todos");
+        btnEliminarTodos.setEnabled(false);
         btnEliminarTodos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarTodosActionPerformed(evt);
@@ -296,6 +279,7 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
         });
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnEliminarActionPerformed(evt);
@@ -317,6 +301,7 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
         });
 
         btnModificar.setText("Modificar");
+        btnModificar.setEnabled(false);
         btnModificar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnModificarActionPerformed(evt);
@@ -368,7 +353,7 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrolPaneUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 319, Short.MAX_VALUE)
+                .addComponent(scrolPaneUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, 409, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
@@ -376,26 +361,25 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEliminarTodosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarTodosActionPerformed
-       btnEliminarTodos();
+        btnEliminarTodos();
     }//GEN-LAST:event_btnEliminarTodosActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-       Eliminar();
+        Eliminar();
     }//GEN-LAST:event_btnEliminarActionPerformed
 
     private void btnAgregarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAgregarActionPerformed
-       abrirDetalle();
+        abrirDetalle();
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
-       btnModificar();
+        btnModificar();
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
-       btnRefrescar();
-       refrescarTabla();
+        btnRefrescar();
+        refrescarTabla();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregar;
     private javax.swing.JButton btnEliminar;
