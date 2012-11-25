@@ -4,9 +4,6 @@ import com.itla.vista.portero.PanelBuscarInvitados;
 import com.itla.vista.portero.PanelEventosActuales;
 import com.itla.vista.portero.PanelEventosProximos;
 import com.itla.vista.portero.PanelListadoCompleto;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JDialog;
 
 /**
@@ -39,6 +36,7 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
+        jButton5 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manejador Invitaciones");
@@ -103,6 +101,13 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
             }
         });
 
+        jButton5.setText("Invitacion");
+        jButton5.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton5ActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -126,7 +131,10 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
                         .addComponent(btnPerfilUsuario)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnUsuario))
-                    .addComponent(jButton4))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(jButton4)
+                        .addGap(18, 18, 18)
+                        .addComponent(jButton5)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
@@ -137,7 +145,8 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
                     .addComponent(jButton1)
                     .addComponent(jButton2)
                     .addComponent(jButton3)
-                    .addComponent(jButton4))
+                    .addComponent(jButton4)
+                    .addComponent(jButton5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(btnInvitados, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
@@ -151,9 +160,8 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEventosActionPerformed
-        // TODO add your handling code here:
         JDialog ventana = new JDialog();
-        ventana.add(new PanelDetalleEvento(ventana));
+        ventana.add(new PanelDetalleEvento(ventana, false));
         ventana.setModal(true);
         ventana.pack();
         ventana.setVisible(true);
@@ -215,6 +223,14 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         ventana.setVisible(true);
     }//GEN-LAST:event_jButton4ActionPerformed
 
+    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
+        JDialog ventana = new JDialog();
+        ventana.add(new PanelCrearInvitacion(ventana));
+        ventana.setModal(true);
+        ventana.pack();
+        ventana.setVisible(true);
+    }//GEN-LAST:event_jButton5ActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -258,5 +274,6 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
+    private javax.swing.JButton jButton5;
     // End of variables declaration//GEN-END:variables
 }

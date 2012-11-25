@@ -25,8 +25,11 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
     private Window padre;
     private ServicioEvento servicio = new ServicioEvento();
     private ArrayList<Evento> eventos;
-    DefaultTableModel model;
-    Object[] columnasTabla;
+    private Evento eventoSeleccionado;
+    private DefaultTableModel model;
+    private Object[] columnasTabla;
+    private boolean selecionMultiple = false;
+    private int colTmp = -1, filaTmp = -1;
 
     public PanelDetalleEvento() {
         refrescar();
@@ -50,41 +53,72 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
             }
         };
         initComponents();
+        btnAceptar.setVisible(false);
+        btnCancelar.setVisible(false);
     }
 
-    public PanelDetalleEvento(Window padre) {
+    public PanelDetalleEvento(Window padre, boolean seleccionMultiple) {
         this();
         this.padre = padre;
+        if (seleccionMultiple) {
+            mostarSeleccion();
+        } else {
+            tablaEvento.addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    super.mouseClicked(e);
+                    JTable target = (JTable) e.getSource();
+                    int row = target.getSelectedRow();
+                    int column = target.getSelectedColumn();
+                    if (e.getClickCount() == 1) {
+                        if (column == 0) {
+                            habilitarModificarEliminar();
+                        }
+                    } else if (e.getClickCount() == 2) {
+                        if (column <= 0) {
+                            return;
+                        }
+                        target.getModel().getValueAt(row, column);
+                        try {
+                            ArrayList<Evento> eventos = new ArrayList<>();
+                            eventos.add(servicio.SeleccionarPorId((int) target.getValueAt(row, 1)));
+                            abrirDetalle(eventos);
+                            refrescar();
+                            refrescarTabla();
+                        } catch (SQLException ex) {
+                            Logger.getLogger(PanelDetalleEvento.class.getName()).log(Level.SEVERE, null, ex);
+                            JOptionPane.showMessageDialog(PanelDetalleEvento.this.padre, "Error cargando el objeto seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
+                        }
+                    }
+                }
+            });
+            btnEliminarTodos.setEnabled(((DefaultTableModel) tablaEvento.getModel()).getRowCount() > 0);
+        }
+    }
+
+    private void mostarSeleccion() {
         tablaEvento.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
                 JTable target = (JTable) e.getSource();
-                int row = target.getSelectedRow();
-                int column = target.getSelectedColumn();
-                if (e.getClickCount() == 1) {
-                    if (column == 0) {
-                        habilitarModificarEliminar();
+                if (filaTmp != -1) {
+                    if (target.getSelectedColumn() == 0) {
+                        model.setValueAt(false, filaTmp, 0);
                     }
-                } else if (e.getClickCount() == 2) {
-                    if (column <= 0) {
-                        return;
-                    }
-                    target.getModel().getValueAt(row, column);
-                    try {
-                        ArrayList<Evento> eventos = new ArrayList<>();
-                        eventos.add(servicio.SeleccionarPorId((int) target.getValueAt(row, 1)));
-                        abrirDetalle(eventos);
-                        refrescar();
-                        refrescarTabla();
-                    } catch (SQLException ex) {
-                        Logger.getLogger(PanelDetalleEvento.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(PanelDetalleEvento.this.padre, "Error cargando el objeto seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
+                }
+                if (target.getSelectedColumn() == 0) {
+                    filaTmp = target.getSelectedRow();
                 }
             }
         });
-        btnEliminarTodos.setEnabled(((DefaultTableModel) tablaEvento.getModel()).getRowCount() > 0);
+        btnAceptar.setVisible(true);
+        btnCancelar.setVisible(true);
+        btnModificar.setVisible(false);
+        btnEliminar.setVisible(false);
+        btnEliminarTodos.setVisible(false);
+        btnAgregar.setVisible(false);
+        selecionMultiple = true;
     }
 
     private Object[] getColumnsNames() {
@@ -249,6 +283,10 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
         ventana.setVisible(true);
     }
 
+    public Evento getEventoSeleccionado() {
+        return eventoSeleccionado;
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -260,44 +298,35 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
 
         scrollPaneEvento = new javax.swing.JScrollPane();
         tablaEvento = new javax.swing.JTable();
-        btnModificar = new javax.swing.JButton();
-        btnRefrescar = new javax.swing.JButton();
-        btnEliminar = new javax.swing.JButton();
-        btnAgregar = new javax.swing.JButton();
+        jPanel1 = new javax.swing.JPanel();
+        btnAceptar = new javax.swing.JButton();
+        btnCancelar = new javax.swing.JButton();
         btnEliminarTodos = new javax.swing.JButton();
+        btnEliminar = new javax.swing.JButton();
+        btnModificar = new javax.swing.JButton();
+        btnAgregar = new javax.swing.JButton();
+        btnRefrescar = new javax.swing.JButton();
 
         tablaEvento.setModel(model);
         scrollPaneEvento.setViewportView(tablaEvento);
 
-        btnModificar.setText("Modificar");
-        btnModificar.setEnabled(false);
-        btnModificar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnModificarActionPerformed(evt);
-            }
-        });
+        jPanel1.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.RIGHT));
 
-        btnRefrescar.setText("Refrescar");
-        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+        btnAceptar.setText("Aceptar");
+        btnAceptar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnRefrescarActionPerformed(evt);
+                btnAceptarActionPerformed(evt);
             }
         });
+        jPanel1.add(btnAceptar);
 
-        btnEliminar.setText("Eliminar");
-        btnEliminar.setEnabled(false);
-        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+        btnCancelar.setText("Cancelar");
+        btnCancelar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEliminarActionPerformed(evt);
+                btnCancelarActionPerformed(evt);
             }
         });
-
-        btnAgregar.setText("Agregar");
-        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnAgregarActionPerformed(evt);
-            }
-        });
+        jPanel1.add(btnCancelar);
 
         btnEliminarTodos.setText("Eliminar Todos");
         btnEliminarTodos.setEnabled(false);
@@ -306,41 +335,63 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
                 btnEliminarTodosActionPerformed(evt);
             }
         });
+        jPanel1.add(btnEliminarTodos);
+
+        btnEliminar.setText("Eliminar");
+        btnEliminar.setEnabled(false);
+        btnEliminar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnEliminar);
+
+        btnModificar.setText("Modificar");
+        btnModificar.setEnabled(false);
+        btnModificar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnModificarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnModificar);
+
+        btnAgregar.setText("Agregar");
+        btnAgregar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAgregarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnAgregar);
+
+        btnRefrescar.setText("Refrescar");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+        jPanel1.add(btnRefrescar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnEliminarTodos)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEliminar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnModificar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnAgregar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnRefrescar))
-                    .addComponent(scrollPaneEvento, javax.swing.GroupLayout.DEFAULT_SIZE, 862, Short.MAX_VALUE))
+                .addComponent(scrollPaneEvento, javax.swing.GroupLayout.DEFAULT_SIZE, 955, Short.MAX_VALUE)
                 .addContainerGap())
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 584, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(19, 19, 19))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(scrollPaneEvento, javax.swing.GroupLayout.DEFAULT_SIZE, 395, Short.MAX_VALUE)
+                .addComponent(scrollPaneEvento, javax.swing.GroupLayout.DEFAULT_SIZE, 308, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnModificar)
-                    .addComponent(btnEliminar)
-                    .addComponent(btnAgregar)
-                    .addComponent(btnRefrescar)
-                    .addComponent(btnEliminarTodos))
-                .addContainerGap())
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(88, 88, 88))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -365,12 +416,31 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
         eliminarTodos();
     }//GEN-LAST:event_btnEliminarTodosActionPerformed
 
+    private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
+        padre.dispose();
+        boolean seleccion;
+     for(int i= 0 ;i< model.getRowCount() ;i++){
+         //if (model.){
+             
+         //}
+         
+     }
+     
+             
+    }//GEN-LAST:event_btnAceptarActionPerformed
+
+    private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
+        padre.dispose();
+    }//GEN-LAST:event_btnCancelarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAceptar;
     private javax.swing.JButton btnAgregar;
+    private javax.swing.JButton btnCancelar;
     private javax.swing.JButton btnEliminar;
     private javax.swing.JButton btnEliminarTodos;
     private javax.swing.JButton btnModificar;
     private javax.swing.JButton btnRefrescar;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane scrollPaneEvento;
     private javax.swing.JTable tablaEvento;
     // End of variables declaration//GEN-END:variables
