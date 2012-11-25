@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -75,5 +76,19 @@ public class EventoAccesoDatos {
         ps.setInt(1, id);
         ps.executeUpdate();
         Conexion.desconectar();
+    }
+    
+    public static List<Evento> seleccionarEventosDeHoy() throws SQLException{
+        Conexion.conectar();
+        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM Evento " +
+                                                              "WHERE TO_CHAR(FECHA, 'dd') = TO_CHAR(TO_DATE('"+new Date()+"', 'DD-Mon-YY'), 'DD')");
+       ResultSet rs = ps.executeQuery();
+       List<Evento> eventos = new ArrayList<>();
+        while (rs.next()) {
+            eventos.add(new Evento(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")),
+                    rs.getString("nombre"), rs.getDate("fecha"), rs.getString("ubicacion")));
+        }
+        Conexion.desconectar();
+        return eventos;
     }
 }
