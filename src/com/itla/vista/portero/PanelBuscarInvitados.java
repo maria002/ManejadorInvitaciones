@@ -1,6 +1,5 @@
 package com.itla.vista.portero;
 
-import com.itla.vista.administrador.*;
 import com.itla.modelo.Invitado;
 import com.itla.servicios.ServicioInvitado;
 import java.awt.Window;
@@ -8,11 +7,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
@@ -26,18 +22,17 @@ public class PanelBuscarInvitados extends javax.swing.JPanel {
     private Window padre;
     private ServicioInvitado servicio = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
-    DefaultTableModel model;
-    Object[] columnasTabla;
+    private DefaultTableModel model;
+    private Object[] columnasTabla;
 
-    public PanelBuscarInvitados() throws SQLException {
-        
+    public PanelBuscarInvitados() {
         columnasTabla = getColumnsNames();
         model = new javax.swing.table.DefaultTableModel(getData(), columnasTabla) {
             Class[] types = new Class[]{
-                java.lang.Boolean.class, java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Boolean.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean[]{
-                true, false, false
+                false, false, false
             };
 
             @Override
@@ -53,71 +48,46 @@ public class PanelBuscarInvitados extends javax.swing.JPanel {
         initComponents();
     }
 
-    public PanelBuscarInvitados(Window padre) throws SQLException {
+    public PanelBuscarInvitados(Window padre) {
         this();
         this.padre = padre;
-        tablaInivtado.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                super.mouseClicked(e);
-                JTable target = (JTable) e.getSource();
-                int row = target.getSelectedRow();
-                int column = target.getSelectedColumn();
-                if (e.getClickCount() == 1) {
-                    if (column == 0) {
-                        //habilitarModificarEliminar();
-                    }
-                } else if (e.getClickCount() == 2) {
-                    if (column <= 0) {
-                        return;
-                    }
-                    target.getModel().getValueAt(row, column);
-                    try {
-                        ArrayList<Invitado> invitados = new ArrayList<>();
-                        invitados.add(servicio.SeleccionarPorId((int) target.getValueAt(row, 1)));
-                        //abrirDetalle(invitados);
-                        refrescar();
-                        
-                    } catch (SQLException ex) {
-                        Logger.getLogger(PanelBuscarInvitados.class.getName()).log(Level.SEVERE, null, ex);
-                        JOptionPane.showMessageDialog(PanelBuscarInvitados.this.padre, "Error cargando el objeto seleccionado", "Error", JOptionPane.ERROR_MESSAGE);
-                    }
-                }
-            }
-        });
-        
-       
     }
 
     private Object[] getColumnsNames() {
-        return new Object[]{"id","Nombre", "Apellido"};
+        return new Object[]{"Id", "Nombre", "Apellido"};
     }
 
     private Object[][] getData() {
-        if (invitados==null){
+        if (invitados == null) {
             return null;
         }
         Object[][] obj = new Object[invitados.size()][columnasTabla.length];
-        
+
         for (int i = 0; i < invitados.size(); i++) {
-            obj[i][0] = false; 
+            obj[i][0] = invitados.get(i).getId();
             obj[i][1] = invitados.get(i).getNombre();
-            obj[i][2] = invitados.get(i).getApellido();        }
+            obj[i][2] = invitados.get(i).getApellido();
+        }
         return obj;
     }
 
-    private void refrescar() throws SQLException {
-        
-            if (invitados != null) {
-                invitados.clear();
+    private void refrescar() {
+        try {
+            if (!txtNombre.getText().isEmpty() || !txtApellido.getText().isEmpty()) {
+                if (invitados != null) {
+                    invitados.clear();
+                }
+                invitados = servicio.buscarInvitdados(txtNombre.getText(), txtApellido.getText());
             }
-            invitados = servicio.buscarInvitdados(txtNombre.getText(), txtApellido.getText());
-        
+        } catch (SQLException ex) {
+            JOptionPane.showMessageDialog(padre, "Error al tratar de conseguir los datos");
+        }
     }
-     private void refrescarTabla() {
+
+    private void refrescarTabla() {
         ((DefaultTableModel) tablaInivtado.getModel()).setDataVector(getData(), columnasTabla);
-        
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -206,15 +176,11 @@ public class PanelBuscarInvitados extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
-        try {
-            // TODO add your handling code here:
-           refrescar();
-           refrescarTabla();
-        } catch (SQLException ex) {
-            Logger.getLogger(PanelBuscarInvitados.class.getName()).log(Level.SEVERE, null, ex);
+        refrescar();
+        if (invitados != null) {
+            refrescarTabla();
         }
     }//GEN-LAST:event_btnBuscarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnBuscar;
     private javax.swing.JLabel jLabel1;

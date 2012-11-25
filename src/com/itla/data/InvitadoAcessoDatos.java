@@ -77,18 +77,41 @@ public class InvitadoAcessoDatos {
         ps.executeUpdate();
         Conexion.desconectar();
     }
-    
-     public static List<Invitado> SeleccionarPorNombreApellido(String nombre, String apellido) throws SQLException {
+
+    public static List<Invitado> SeleccionarPorNombreApellido(String nombre, String apellido) throws SQLException {
         Conexion.conectar();
-        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM invitado WHERE nombre like ? OR apellido like ?");
-        ps.setString(1, "%"+nombre+"%");
-        ps.setString(2, "%"+apellido+"%");
-        ResultSet rs = ps.executeQuery();
-        ArrayList<Invitado> invitados = new ArrayList<>();
-        while (rs.next()) {
-            invitados.add(new Invitado(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")), rs.getString("nombre"), rs.getString("apellido"), rs.getString("telefono"), rs.getString("Direccion"), rs.getString("sexo")));
+        String query = "SELECT * FROM invitado WHERE ";
+        PreparedStatement ps = null;
+        boolean ejecutar = false;
+        ArrayList<Invitado> invitados = null;
+        
+        if (nombre != null && !nombre.isEmpty() && apellido != null && !apellido.isEmpty()) {
+            query = "nombre like ? OR apellido ?";
+            ps = Conexion.conn.prepareStatement(query);
+            ps.setString(1, "%" + nombre + "%");
+            ps.setString(2, "%" + apellido + "%");
+            ejecutar = true;
+        } else if (nombre != null && !nombre.isEmpty()) {
+            query += "nombre like ? ";
+            ps = Conexion.conn.prepareStatement(query);
+            ps.setString(1, "%" + nombre + "%");
+            ejecutar = true;
+        } else if (apellido != null && !apellido.isEmpty()) {
+            query += "apellido like ?";
+            ps = Conexion.conn.prepareStatement(query);
+            ps.setString(1, "%" + apellido + "%");
+            ejecutar = true;
         }
-        Conexion.desconectar();
+        
+        if (ejecutar) {
+            ResultSet rs = ps.executeQuery();
+            invitados = new ArrayList<>();
+            while (rs.next()) {
+                invitados.add(new Invitado(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")), rs.getString("nombre"), rs.getString("apellido"), rs.getString("telefono"), rs.getString("Direccion"), rs.getString("sexo")));
+            }
+            Conexion.desconectar();
+        }
+
         return invitados;
     }
 }
