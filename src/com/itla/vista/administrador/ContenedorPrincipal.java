@@ -120,7 +120,11 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_btnPerfilUsuarioActionPerformed
 
     private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
-       
+        JDialog ventana = new JDialog();
+        ventana.add(new PanelDetalleUsuario(ventana));
+        ventana.setModal(true);
+        ventana.pack();
+        ventana.setVisible(true);
     }//GEN-LAST:event_btnUsuarioActionPerformed
 
     /**

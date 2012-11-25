@@ -51,12 +51,12 @@ public class Conexion {
         //aqui creamos un datasource para iniciar la conexion 
         OracleDataSource ods = new OracleDataSource();
         //aqui creamos un url de conexion 
-        ods.setURL("jdbc:oracle:thin:DBINVITACIONES/musica59@Owner-HP:1521:XE");
+        ods.setURL("jdbc:oracle:thin:JEHOVA/1234@MININT-OAII0R6:1521:XE");
 
 //      aqui creamos un datasource para iniciar la conexion 
-        ods = new OracleDataSource();
+        //ods = new OracleDataSource();
         // aqui creamos un url de conexion 
-        ods.setURL("jdbc:oracle:thin:" + datosConexion.get("BD") + "/" + datosConexion.get("CLAVE") + "@" + datosConexion.get("SERVIDOR") + ":" + datosConexion.get("PUERTO") + ":XE");
+        //ods.setURL("jdbc:oracle:thin:" + datosConexion.get("BD") + "/" + datosConexion.get("CLAVE") + "@" + datosConexion.get("SERVIDOR") + ":" + datosConexion.get("PUERTO") + ":XE");
 
         conn = ods.getConnection();
         st = conn.createStatement();
