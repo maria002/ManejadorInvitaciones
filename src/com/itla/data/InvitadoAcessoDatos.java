@@ -1,5 +1,6 @@
 package com.itla.data;
 //cambios samuel
+import com.itla.modelo.Evento;
 import com.itla.modelo.Invitado;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -76,4 +77,18 @@ public class InvitadoAcessoDatos {
         ps.executeUpdate();
         Conexion.desconectar();
     }
+    
+     public static Invitado SeleccionarInvitadosEventos(Evento evento) throws SQLException {
+        Conexion.conectar();
+        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM evento WHERE ID_EVENTO = ?");
+        //ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        Invitado invitado = null;
+        while (rs.next()) {
+            invitado = new Invitado(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")), rs.getString("nombre"), rs.getString("apellido"), rs.getString("telefono"), rs.getString("Direccion"), rs.getString("sexo"));
+        }
+        Conexion.desconectar();
+        return invitado;
+    }
+
 }

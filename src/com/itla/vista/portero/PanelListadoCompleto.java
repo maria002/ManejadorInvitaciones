@@ -1,5 +1,6 @@
 package com.itla.vista.portero;
 
+import com.itla.modelo.Evento;
 import com.itla.vista.administrador.*;
 import com.itla.modelo.Invitado;
 import com.itla.servicios.ServicioInvitado;
@@ -20,8 +21,9 @@ public class PanelListadoCompleto extends javax.swing.JPanel {
     private Window padre;
     private ServicioInvitado servicio = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
-    DefaultTableModel model;
-    Object[] columnasTabla;
+    private DefaultTableModel model;
+    private Object[] columnasTabla;
+    private Evento evento;
 
     public PanelListadoCompleto() {
         refrescar();
@@ -47,9 +49,10 @@ public class PanelListadoCompleto extends javax.swing.JPanel {
         initComponents();
     }
 
-    public PanelListadoCompleto(Window padre) {
+    public PanelListadoCompleto(Window padre, Evento evento) {
         this();
         this.padre = padre;
+        this.evento = evento;
     }
 
     private Object[] getColumnsNames() {
@@ -88,9 +91,9 @@ public class PanelListadoCompleto extends javax.swing.JPanel {
 
     private void refrescarTabla() {
         ((DefaultTableModel) tablaInivtado.getModel()).setDataVector(getData(), columnasTabla);
-       
+
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -165,7 +168,6 @@ public class PanelListadoCompleto extends javax.swing.JPanel {
         refrescar();
         refrescarTabla();
     }//GEN-LAST:event_btnRefrescarActionPerformed
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;
     private javax.swing.JLabel jLabel1;
