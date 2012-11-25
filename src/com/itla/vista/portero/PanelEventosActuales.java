@@ -110,7 +110,7 @@ public class PanelEventosActuales extends javax.swing.JPanel {
             if (eventos != null) {
                 eventos.clear();
             }
-            eventos = servicio.seleccionarTodos();
+            eventos = servicio.seleccionarEventosDeHoy();
         } catch (SQLException ex) {
             Logger.getLogger(PanelEventosActuales.class
                     .getName()).log(Level.SEVERE, null, ex);

@@ -26,4 +26,8 @@ public class ServicioEvento {
     public void eliminar(int id) throws SQLException{
         EventoAccesoDatos.eliminar(id);
     }
+    
+    public ArrayList<Evento> seleccionarEventosDeHoy() throws SQLException{
+        return (ArrayList<Evento>) EventoAccesoDatos.seleccionarEventosDeHoy();
+    }
 }
