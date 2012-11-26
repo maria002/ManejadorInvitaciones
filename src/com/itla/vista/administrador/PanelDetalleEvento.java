@@ -6,9 +6,12 @@ import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -417,16 +420,32 @@ public class PanelDetalleEvento extends javax.swing.JPanel {
     }//GEN-LAST:event_btnEliminarTodosActionPerformed
 
     private void btnAceptarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAceptarActionPerformed
-        padre.dispose();
-        boolean seleccion;
-     for(int i= 0 ;i< model.getRowCount() ;i++){
-         //if (model.){
-             
-         //}
-         
-     }
-     
-             
+        boolean seleccion = false;
+        int tmp = -1;
+        for (int i = 0; i < model.getRowCount(); i++) {
+            if ((boolean) model.getValueAt(i, 0)) {
+                seleccion = true;
+                tmp = i;
+                break;
+            }
+        }
+        if (seleccion) {
+            eventoSeleccionado = new Evento();
+            Vector obj = (Vector)model.getDataVector().get(tmp);
+            System.out.println(obj.toString());
+            eventoSeleccionado.setId((int)obj.get(1));
+            eventoSeleccionado.setNombre((String)obj.get(2));
+            try {
+                eventoSeleccionado.setFecha( Evento.formato.parse((String)obj.get(3)) );
+            } catch (ParseException ex) {
+                Logger.getLogger(PanelDetalleEvento.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            eventoSeleccionado.setUbicacion((String)obj.get(4));
+            eventoSeleccionado.setActivo((boolean)obj.get(5));
+            padre.dispose();
+        } else {
+            JOptionPane.showMessageDialog(padre, "Debe seleccionar un evento", "Seleccion Invalida", JOptionPane.WARNING_MESSAGE);
+        }
     }//GEN-LAST:event_btnAceptarActionPerformed
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed

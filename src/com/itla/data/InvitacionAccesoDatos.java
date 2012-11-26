@@ -15,7 +15,7 @@ public class InvitacionAccesoDatos {
 
     public static List<Invitacion> SeleccionarTodo() throws SQLException {
         Conexion.conectar();
-        ResultSet rs = Conexion.st.executeQuery("SELECT * FROM evento");
+        ResultSet rs = Conexion.st.executeQuery("SELECT * FROM invitacion");
         ArrayList<Invitacion> invitacion = new ArrayList<>();
         while (rs.next()) {
             invitacion.add(new Invitacion(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")),
@@ -30,7 +30,7 @@ public class InvitacionAccesoDatos {
 
     public static Invitacion SeleccionarPorId(int id) throws SQLException {
         Conexion.conectar();
-        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM invitado WHERE ID_INVITADO = ?");
+        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM invitacion WHERE ID_INVITADO = ?");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         Invitacion invitacion = null;
@@ -68,7 +68,7 @@ public class InvitacionAccesoDatos {
             throw new IllegalArgumentException("No se puede modificar un registro con id 0");
         }
         Conexion.conectar();
-        PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE invitado SET NOMBRE = ?, FECHA_Asistencia = ?, Razon_visita = ?, ACTIVO = ?, id_evento= ?, id_invitado=?, id_usuario = ? WHERE ID_EVENTO = ?");
+        PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE invitacion SET NOMBRE = ?, FECHA_Asistencia = ?, Razon_visita = ?, ACTIVO = ?, id_evento= ?, id_invitado=?, id_usuario = ? WHERE ID_EVENTO = ?");
         ps.setDate(2, new java.sql.Date(invitacion.getFechaAsistencia().getTime()));
         ps.setString(3, invitacion.getRazonVisita());
         ps.setString(4, String.valueOf(Conexion.convertirBooleanAChar(invitacion.isActivo())));

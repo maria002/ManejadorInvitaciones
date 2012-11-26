@@ -152,10 +152,8 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         abrirVentana(new PanelDetallePerfilUsuario(this), "Perfiles De Usuario");
     }//GEN-LAST:event_mnPerfilUsuarioActionPerformed
 
-    public void abrirVentana(JPanel panel, String titulo){
-        JInternalFrame frame = new JInternalFrame(titulo);
-        frame.setResizable(true);
-        frame.setClosable(true);
+    public void abrirVentana(JPanel panel, String titulo) {
+        JInternalFrame frame = new JInternalFrame(titulo, true, true, true, true);
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();
         try {
@@ -166,7 +164,6 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         mdiContainer.add(frame);
         frame.setVisible(true);
     }
-   
 
     /**
      * @param args the command line arguments

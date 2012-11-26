@@ -1,19 +1,15 @@
 package com.itla.vista.administrador;
 
+import com.itla.modelo.Evento;
 import com.itla.modelo.Invitado;
-import com.itla.modelo.Usuario;
 import com.itla.servicios.ServicioInvitado;
-import com.itla.servicios.ServicioUsuario;
 import java.awt.Window;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -27,6 +23,7 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
     private ArrayList<Invitado> invitados;
     private DefaultTableModel model;
     private Object[] columnasTabla;
+    private Evento evento;
 
     /**
      * Creates new form PanelCrearInvitado
@@ -52,7 +49,6 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
                 return canEdit[columnIndex];
             }
         };
-
         initComponents();
     }
 
@@ -77,9 +73,15 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
             obj[i][5] = invitados.get(i).getDireccion();
             obj[i][6] = invitados.get(i).getSexo();
             obj[i][7] = invitados.get(i).isActivo();
-
         }
         return obj;
+    }
+
+    private void cargarData() {
+        txtId.setText(Integer.toString(evento.getId()));
+        txtFecha.setText(Evento.formato.format(evento.getFecha()));
+        txtNombre.setText(evento.getNombre());
+        txtUbicacion.setText(evento.getUbicacion());
     }
 
     private void refrescar() {
@@ -125,11 +127,11 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
         labelNombre = new javax.swing.JLabel();
         labelFecha = new javax.swing.JLabel();
         labelUbicacion = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
-        jTextField3 = new javax.swing.JTextField();
+        txtNombre = new javax.swing.JTextField();
+        txtFecha = new javax.swing.JTextField();
+        txtUbicacion = new javax.swing.JTextField();
         labelID = new javax.swing.JLabel();
-        jTextField4 = new javax.swing.JTextField();
+        txtId = new javax.swing.JTextField();
         btnElegir = new javax.swing.JButton();
         panelEligeInvitado = new javax.swing.JPanel();
         btnAgregarInvitado = new javax.swing.JButton();
@@ -137,7 +139,6 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
         tablaInivtado = new javax.swing.JTable();
         jPanel3 = new javax.swing.JPanel();
         btnGuardar = new javax.swing.JButton();
-        btnGuardarYsalir = new javax.swing.JButton();
 
         jLabel5.setText("jLabel5");
 
@@ -149,15 +150,15 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
 
         labelUbicacion.setText("Ubicacion:");
 
-        jTextField1.setEditable(false);
+        txtNombre.setEditable(false);
 
-        jTextField2.setEditable(false);
+        txtFecha.setEditable(false);
 
-        jTextField3.setEditable(false);
+        txtUbicacion.setEditable(false);
 
         labelID.setText("Id:");
 
-        jTextField4.setEditable(false);
+        txtId.setEditable(false);
 
         btnElegir.setText("Elegir evento");
         btnElegir.addActionListener(new java.awt.event.ActionListener() {
@@ -176,7 +177,7 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
                     .addGroup(panelElijaEventoLayout.createSequentialGroup()
                         .addComponent(labelUbicacion)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, 173, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(panelElijaEventoLayout.createSequentialGroup()
                         .addGroup(panelElijaEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(labelNombre)
@@ -184,41 +185,41 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
                             .addComponent(labelID))
                         .addGap(18, 18, 18)
                         .addGroup(panelElijaEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2)
-                            .addComponent(jTextField1)
-                            .addComponent(jTextField4, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
+                            .addComponent(txtFecha)
+                            .addComponent(txtNombre)
+                            .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnElegir)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelElijaEventoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {jTextField1, jTextField2, jTextField3});
+        panelElijaEventoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtFecha, txtNombre, txtUbicacion});
 
         panelElijaEventoLayout.setVerticalGroup(
             panelElijaEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelElijaEventoLayout.createSequentialGroup()
                 .addGroup(panelElijaEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelID)
-                    .addComponent(jTextField4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(txtId, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnElegir))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelElijaEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelNombre)
-                    .addComponent(jTextField1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelElijaEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelFecha)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtFecha, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(panelElijaEventoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(labelUbicacion)
-                    .addComponent(jTextField3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtUbicacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         panelEligeInvitado.setBorder(javax.swing.BorderFactory.createTitledBorder("Elija los invitados"));
 
-        btnAgregarInvitado.setText("Agregar invitado");
+        btnAgregarInvitado.setText("Agregar nuevo invitado");
         btnAgregarInvitado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAgregarInvitadoActionPerformed(evt);
@@ -233,7 +234,7 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
         panelEligeInvitadoLayout.setHorizontalGroup(
             panelEligeInvitadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(panelEligeInvitadoLayout.createSequentialGroup()
-                .addContainerGap(657, Short.MAX_VALUE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(btnAgregarInvitado)
                 .addContainerGap())
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEligeInvitadoLayout.createSequentialGroup()
@@ -250,16 +251,12 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
 
         btnGuardar.setText("Guardar");
 
-        btnGuardarYsalir.setText("Guardar y salir");
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnGuardarYsalir)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGuardar)
                 .addContainerGap())
         );
@@ -267,9 +264,7 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGuardar)
-                    .addComponent(btnGuardarYsalir))
+                .addComponent(btnGuardar)
                 .addGap(0, 11, Short.MAX_VALUE))
         );
 
@@ -316,21 +311,19 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
         ventana.setModal(true);
         ventana.pack();
         ventana.setVisible(true);
-        
+        evento = vent2.getEventoSeleccionado();
+        if (evento != null) {
+            cargarData();
+        }
     }//GEN-LAST:event_btnElegirActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarInvitado;
     private javax.swing.JButton btnElegir;
     private javax.swing.JButton btnGuardar;
-    private javax.swing.JButton btnGuardarYsalir;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
-    private javax.swing.JTextField jTextField3;
-    private javax.swing.JTextField jTextField4;
     private javax.swing.JLabel labelFecha;
     private javax.swing.JLabel labelID;
     private javax.swing.JLabel labelNombre;
@@ -338,5 +331,9 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
     private javax.swing.JPanel panelEligeInvitado;
     private javax.swing.JPanel panelElijaEvento;
     private javax.swing.JTable tablaInivtado;
+    private javax.swing.JTextField txtFecha;
+    private javax.swing.JTextField txtId;
+    private javax.swing.JTextField txtNombre;
+    private javax.swing.JTextField txtUbicacion;
     // End of variables declaration//GEN-END:variables
 }
