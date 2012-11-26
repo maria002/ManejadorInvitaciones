@@ -1,9 +1,5 @@
 package com.itla.vista.administrador;
 
-import com.itla.vista.portero.PanelBuscarInvitados;
-import com.itla.vista.portero.PanelEventosActuales;
-import com.itla.vista.portero.PanelEventosProximos;
-import com.itla.vista.portero.PanelListadoCompleto;
 import javax.swing.JDialog;
 
 /**
@@ -28,200 +24,93 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnEventos = new javax.swing.JButton();
-        btnPerfilUsuario = new javax.swing.JButton();
-        btnUsuario = new javax.swing.JButton();
-        btnInvitados = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        jDesktopPane2 = new javax.swing.JDesktopPane();
+        jDesktopPane1 = new javax.swing.JDesktopPane();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu1 = new javax.swing.JMenu();
+        mnSalir = new javax.swing.JMenuItem();
+        mnCerrarSeccion = new javax.swing.JMenuItem();
+        jMenu2 = new javax.swing.JMenu();
+        mnEventos = new javax.swing.JMenuItem();
+        mnUsuarios = new javax.swing.JMenuItem();
+        mnInvitaciones = new javax.swing.JMenuItem();
+        mnInvitados = new javax.swing.JMenuItem();
+        mnPerfilUsuario = new javax.swing.JMenuItem();
+        jMenu7 = new javax.swing.JMenu();
+        mnAyuda = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manejador Invitaciones");
 
-        btnEventos.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnEventos.setText("Manejador Eventos");
-        btnEventos.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEventosActionPerformed(evt);
-            }
-        });
+        jMenu1.setText("Archivo");
 
-        btnPerfilUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnPerfilUsuario.setText("Perfiles de Usuarios");
-        btnPerfilUsuario.addActionListener(new java.awt.event.ActionListener() {
+        mnSalir.setText("Salir");
+        mnSalir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnPerfilUsuarioActionPerformed(evt);
+                mnSalirActionPerformed(evt);
             }
         });
+        jMenu1.add(mnSalir);
 
-        btnUsuario.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnUsuario.setText("Manejar Usuarios");
-        btnUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnUsuarioActionPerformed(evt);
-            }
-        });
+        mnCerrarSeccion.setText("Cerrar Seccion");
+        jMenu1.add(mnCerrarSeccion);
 
-        btnInvitados.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        btnInvitados.setText("Invitados");
-        btnInvitados.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnInvitadosActionPerformed(evt);
-            }
-        });
+        jMenuBar1.add(jMenu1);
 
-        jButton1.setText("Portero inicio");
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
+        jMenu2.setText("Administrar");
 
-        jButton2.setText("Eventos Proximos");
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        mnEventos.setText("Eventos");
+        mnEventos.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                mnEventosActionPerformed(evt);
             }
         });
+        jMenu2.add(mnEventos);
 
-        jButton3.setText("Listado Completo");
-        jButton3.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton3ActionPerformed(evt);
-            }
-        });
+        mnUsuarios.setText("Usuarios");
+        jMenu2.add(mnUsuarios);
 
-        jButton4.setText("Buscar Usuarios");
-        jButton4.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton4ActionPerformed(evt);
-            }
-        });
+        mnInvitaciones.setText("Invitaciones");
+        jMenu2.add(mnInvitaciones);
 
-        jButton5.setText("Invitacion");
-        jButton5.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton5ActionPerformed(evt);
-            }
-        });
+        mnInvitados.setText("Invitados");
+        jMenu2.add(mnInvitados);
+
+        mnPerfilUsuario.setText("Perfil Usuario");
+        jMenu2.add(mnPerfilUsuario);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu7.setText("Acerca de");
+
+        mnAyuda.setText("Ayuda");
+        jMenu7.add(mnAyuda);
+
+        jMenuBar1.add(jMenu7);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton2)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jButton3))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnInvitados, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEventos)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(btnPerfilUsuario)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnUsuario))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton4)
-                        .addGap(18, 18, 18)
-                        .addComponent(jButton5)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(237, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButton1)
-                    .addComponent(jButton2)
-                    .addComponent(jButton3)
-                    .addComponent(jButton4)
-                    .addComponent(jButton5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(btnInvitados, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
-                    .addComponent(btnEventos, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 63, Short.MAX_VALUE)
-                    .addComponent(btnPerfilUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnUsuario, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEventosActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelDetalleEvento(ventana, false));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_btnEventosActionPerformed
+    private void mnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSalirActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnSalirActionPerformed
 
-    private void btnInvitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInvitadosActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelDetalleInvitado(ventana));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_btnInvitadosActionPerformed
-
-    private void btnPerfilUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPerfilUsuarioActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelDetallePerfilUsuario(ventana));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_btnPerfilUsuarioActionPerformed
-
-    private void btnUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUsuarioActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelDetalleUsuario(ventana));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_btnUsuarioActionPerformed
-
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelEventosActuales(ventana));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
-
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelEventosProximos(ventana));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jButton2ActionPerformed
-
-    private void jButton3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton3ActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelListadoCompleto(ventana, null));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jButton3ActionPerformed
-
-    private void jButton4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton4ActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelBuscarInvitados(ventana));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jButton4ActionPerformed
+    private void mnEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEventosActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_mnEventosActionPerformed
 
     private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
         JDialog ventana = new JDialog();
@@ -266,14 +155,19 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnEventos;
-    private javax.swing.JButton btnInvitados;
-    private javax.swing.JButton btnPerfilUsuario;
-    private javax.swing.JButton btnUsuario;
-    private javax.swing.JButton jButton1;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
+    private javax.swing.JDesktopPane jDesktopPane1;
+    private javax.swing.JDesktopPane jDesktopPane2;
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu7;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem mnAyuda;
+    private javax.swing.JMenuItem mnCerrarSeccion;
+    private javax.swing.JMenuItem mnEventos;
+    private javax.swing.JMenuItem mnInvitaciones;
+    private javax.swing.JMenuItem mnInvitados;
+    private javax.swing.JMenuItem mnPerfilUsuario;
+    private javax.swing.JMenuItem mnSalir;
+    private javax.swing.JMenuItem mnUsuarios;
     // End of variables declaration//GEN-END:variables
 }

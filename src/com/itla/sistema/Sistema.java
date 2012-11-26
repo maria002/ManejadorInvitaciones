@@ -1,6 +1,7 @@
 package com.itla.sistema;
 
 import com.itla.vista.administrador.ContenedorPrincipal;
+import com.itla.vista.administrador.LoginVista;
 
 /**
  *
@@ -22,7 +23,7 @@ public class Sistema {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ContenedorPrincipal().setVisible(true);
+                new LoginVista().setVisible(true);
                
             }
         });

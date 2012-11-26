@@ -3,8 +3,10 @@ package com.itla.vista.administrador;
 import com.itla.modelo.Usuario;
 import com.itla.servicios.ServicioUsuario;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -116,9 +118,14 @@ public class LoginPanel extends javax.swing.JPanel {
         } else {
             try {
                 usuarios = servicio.autenticar(txtUsuario.getText(), String.valueOf(txtClave.getPassword()));
-                System.out.println(usuarios);
                 if (usuarios != null) {
-                    padre.dispose();
+                    if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("administracion")) {
+                        new ContenedorPrincipal().setVisible(true);
+                    } else {
+                        System.out.println("error");
+                    }
+                }
+                if (usuarios != null) {
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
