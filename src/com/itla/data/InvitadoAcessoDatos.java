@@ -1,7 +1,6 @@
 package com.itla.data;
 //cambios samuel
 import com.itla.modelo.Invitado;
-import com.sun.xml.internal.bind.v2.model.core.ID;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;

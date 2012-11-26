@@ -3,10 +3,8 @@ package com.itla.vista.administrador;
 import com.itla.modelo.Usuario;
 import com.itla.servicios.ServicioUsuario;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
@@ -120,9 +118,10 @@ public class LoginPanel extends javax.swing.JPanel {
                 usuarios = servicio.autenticar(txtUsuario.getText(), String.valueOf(txtClave.getPassword()));
                 if (usuarios != null) {
                     if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("administracion")) {
+                       setVisible(false); 
                         new ContenedorPrincipal().setVisible(true);
                     } else {
-                        System.out.println("error");
+                        JOptionPane.showMessageDialog(padre, "Perfil de usuario no implementado", "Error", JOptionPane.ERROR_MESSAGE);
                     }
                 }
                 if (usuarios != null) {

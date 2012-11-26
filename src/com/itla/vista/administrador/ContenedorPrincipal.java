@@ -1,6 +1,11 @@
 package com.itla.vista.administrador;
 
-import javax.swing.JDialog;
+import java.awt.BorderLayout;
+import java.beans.PropertyVetoException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JInternalFrame;
+import javax.swing.JPanel;
 
 /**
  *
@@ -24,8 +29,7 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jDesktopPane2 = new javax.swing.JDesktopPane();
-        jDesktopPane1 = new javax.swing.JDesktopPane();
+        mdiContainer = new javax.swing.JDesktopPane();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnSalir = new javax.swing.JMenuItem();
@@ -68,15 +72,35 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         jMenu2.add(mnEventos);
 
         mnUsuarios.setText("Usuarios");
+        mnUsuarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnUsuariosActionPerformed(evt);
+            }
+        });
         jMenu2.add(mnUsuarios);
 
         mnInvitaciones.setText("Invitaciones");
+        mnInvitaciones.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnInvitacionesActionPerformed(evt);
+            }
+        });
         jMenu2.add(mnInvitaciones);
 
         mnInvitados.setText("Invitados");
+        mnInvitados.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnInvitadosActionPerformed(evt);
+            }
+        });
         jMenu2.add(mnInvitados);
 
         mnPerfilUsuario.setText("Perfil Usuario");
+        mnPerfilUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnPerfilUsuarioActionPerformed(evt);
+            }
+        });
         jMenu2.add(mnPerfilUsuario);
 
         jMenuBar1.add(jMenu2);
@@ -94,31 +118,55 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
+            .addComponent(mdiContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 706, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jDesktopPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
+            .addComponent(mdiContainer, javax.swing.GroupLayout.DEFAULT_SIZE, 324, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void mnSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnSalirActionPerformed
-        // TODO add your handling code here:
+        System.exit(0);
     }//GEN-LAST:event_mnSalirActionPerformed
 
     private void mnEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEventosActionPerformed
-        // TODO add your handling code here:
+        abrirVentana(new PanelDetalleEvento(this, false), "Eventos");
     }//GEN-LAST:event_mnEventosActionPerformed
 
-    private void jButton5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton5ActionPerformed
-        JDialog ventana = new JDialog();
-        ventana.add(new PanelCrearInvitacion(ventana));
-        ventana.setModal(true);
-        ventana.pack();
-        ventana.setVisible(true);
-    }//GEN-LAST:event_jButton5ActionPerformed
+    private void mnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUsuariosActionPerformed
+        abrirVentana(new PanelDetalleUsuario(this), "Usuarios");
+    }//GEN-LAST:event_mnUsuariosActionPerformed
+
+    private void mnInvitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnInvitacionesActionPerformed
+        abrirVentana(new PanelCrearInvitacion(this), "Invitacion");
+    }//GEN-LAST:event_mnInvitacionesActionPerformed
+
+    private void mnInvitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnInvitadosActionPerformed
+        abrirVentana(new PanelDetalleInvitado(this), "Invitados");
+    }//GEN-LAST:event_mnInvitadosActionPerformed
+
+    private void mnPerfilUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilUsuarioActionPerformed
+        abrirVentana(new PanelDetallePerfilUsuario(this), "Perfiles De Usuario");
+    }//GEN-LAST:event_mnPerfilUsuarioActionPerformed
+
+    public void abrirVentana(JPanel panel, String titulo){
+        JInternalFrame frame = new JInternalFrame(titulo);
+        frame.setResizable(true);
+        frame.setClosable(true);
+        frame.add(panel, BorderLayout.CENTER);
+        frame.pack();
+        try {
+            frame.setSelected(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContenedorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        mdiContainer.add(frame);
+        frame.setVisible(true);
+    }
+   
 
     /**
      * @param args the command line arguments
@@ -155,12 +203,11 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JDesktopPane jDesktopPane1;
-    private javax.swing.JDesktopPane jDesktopPane2;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JDesktopPane mdiContainer;
     private javax.swing.JMenuItem mnAyuda;
     private javax.swing.JMenuItem mnCerrarSeccion;
     private javax.swing.JMenuItem mnEventos;
