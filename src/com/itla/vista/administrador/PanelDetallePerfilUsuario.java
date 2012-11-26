@@ -20,9 +20,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Maria Elena
  */
-public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
+public class PanelDetallePerfilUsuario extends AbstractPanel {
 
-    private Window padre;
     private ServicioPerfilUsuario servicio = new ServicioPerfilUsuario();
     private ArrayList<PerfilUsuario> perfiles;
     private DefaultTableModel model;
@@ -123,7 +122,6 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
 
     private boolean validarSeleccion() {
         for (int fila = 0; fila < tablaPerfil.getModel().getRowCount(); fila++) {
-            System.out.println(tablaPerfil.getModel().getValueAt(fila, 0));
             if ((boolean) tablaPerfil.getModel().getValueAt(fila, 0)) {
                 return true;
             }
@@ -242,6 +240,7 @@ public class PanelDetallePerfilUsuario extends javax.swing.JPanel {
         ventana.pack();
         ventana.setVisible(true);
     } 
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

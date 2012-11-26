@@ -13,9 +13,8 @@ import javax.swing.JOptionPane;
  *
  * @author Maria Elena
  */
-public class PanelInvitado extends javax.swing.JPanel {
+public class PanelInvitado extends AbstractPanel {
 
-    private Window padre;
     private ServicioInvitado servicio = new ServicioInvitado();
     private List<Invitado> listaInvitado;
     private int modificandoIdx = 0;
@@ -93,7 +92,6 @@ public class PanelInvitado extends javax.swing.JPanel {
         }
         JOptionPane.showMessageDialog(padre, "Datos insertados correctamente", "Datos insertados", JOptionPane.INFORMATION_MESSAGE);
         txtNombre.requestFocus();
-
     }
 
     private void limpiarCampos() {
@@ -289,7 +287,6 @@ public class PanelInvitado extends javax.swing.JPanel {
 
     private void btnCancelarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCancelarActionPerformed
         padre.dispose();
-        //System.out.println(boton);
     }//GEN-LAST:event_btnCancelarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;

@@ -1,11 +1,12 @@
 package com.itla.vista.administrador;
 
+import com.itla.modelo.Sesion;
 import java.awt.BorderLayout;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
-import javax.swing.JPanel;
 
 /**
  *
@@ -13,11 +14,17 @@ import javax.swing.JPanel;
  */
 public class ContenedorPrincipal extends javax.swing.JFrame {
 
+    private JFrame padre;
     /**
      * Creates new form ContenedorPrincipal
      */
     public ContenedorPrincipal() {
         initComponents();
+    }
+    
+    public ContenedorPrincipal(JFrame padre){
+        this();
+        this.padre = padre;
     }
 
     /**
@@ -57,6 +64,11 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         jMenu1.add(mnSalir);
 
         mnCerrarSeccion.setText("Cerrar Seccion");
+        mnCerrarSeccion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnCerrarSeccionActionPerformed(evt);
+            }
+        });
         jMenu1.add(mnCerrarSeccion);
 
         jMenuBar1.add(jMenu1);
@@ -133,26 +145,32 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     }//GEN-LAST:event_mnSalirActionPerformed
 
     private void mnEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEventosActionPerformed
-        abrirVentana(new PanelDetalleEvento(this, false), "Eventos");
+        abrirVentana(new PanelDetalleEvento(null, false), "Eventos");
     }//GEN-LAST:event_mnEventosActionPerformed
 
     private void mnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUsuariosActionPerformed
-        abrirVentana(new PanelDetalleUsuario(this), "Usuarios");
+        abrirVentana(new PanelDetalleUsuario(null), "Usuarios");
     }//GEN-LAST:event_mnUsuariosActionPerformed
 
     private void mnInvitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnInvitacionesActionPerformed
-        abrirVentana(new PanelCrearInvitacion(this), "Invitacion");
+        abrirVentana(new PanelCrearInvitacion(), "Invitacion");
     }//GEN-LAST:event_mnInvitacionesActionPerformed
 
     private void mnInvitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnInvitadosActionPerformed
-        abrirVentana(new PanelDetalleInvitado(this), "Invitados");
+        abrirVentana(new PanelDetalleInvitado(), "Invitados");
     }//GEN-LAST:event_mnInvitadosActionPerformed
 
     private void mnPerfilUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilUsuarioActionPerformed
-        abrirVentana(new PanelDetallePerfilUsuario(this), "Perfiles De Usuario");
+        abrirVentana(new PanelDetallePerfilUsuario(), "Perfiles De Usuario");
     }//GEN-LAST:event_mnPerfilUsuarioActionPerformed
 
-    public void abrirVentana(JPanel panel, String titulo) {
+    private void mnCerrarSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCerrarSeccionActionPerformed
+        Sesion.usuarioLogeado = null;
+        setVisible(false);
+        padre.setVisible(true);
+    }//GEN-LAST:event_mnCerrarSeccionActionPerformed
+
+    public void abrirVentana(AbstractPanel panel, String titulo) {
         JInternalFrame frame = new JInternalFrame(titulo, true, true, true, true);
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();

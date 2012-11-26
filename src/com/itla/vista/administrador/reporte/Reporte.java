@@ -1,18 +1,11 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.itla.vista.administrador.reporte;
-
 /**
  *
  * @author Dawlin
  */
 public class Reporte extends javax.swing.JPanel {
 
-    /**
-     * Creates new form Reporte
-     */
+    
     public Reporte() {
         initComponents();
     }

@@ -20,9 +20,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Maria Elena
  */
-public class PanelDetalleInvitado extends javax.swing.JPanel {
+public class PanelDetalleInvitado extends AbstractPanel {
 
-    private Window padre;
     private ServicioInvitado servicio = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
     private DefaultTableModel model;
@@ -128,7 +127,6 @@ public class PanelDetalleInvitado extends javax.swing.JPanel {
 
     private boolean validarSeleccion() {
         for (int fila = 0; fila < tablaInivtado.getModel().getRowCount(); fila++) {
-            System.out.println(tablaInivtado.getModel().getValueAt(fila, 0));
             if ((boolean) tablaInivtado.getModel().getValueAt(fila, 0)) {
                 return true;
             }

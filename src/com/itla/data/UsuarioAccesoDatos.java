@@ -106,7 +106,6 @@ public class UsuarioAccesoDatos {
         Usuario usuario = null;
         while (rs.next()) {
             usuario = new Usuario(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")), rs.getString("Nombre"), rs.getString("Apellido"), rs.getString("Cuenta"), null, PerfilUsuarioAccesoDatos.SeleccionarPorId(rs.getInt("Id_Perfil_Usuario")));
-            System.out.println("Bienvenido");
         }
         Conexion.desconectar();
         return usuario;

@@ -1,11 +1,15 @@
 package com.itla.vista.administrador;
 
 import com.itla.modelo.Evento;
+import com.itla.modelo.Invitacion;
 import com.itla.modelo.Invitado;
+import com.itla.modelo.Sesion;
+import com.itla.servicios.ServicioInvitacion;
 import com.itla.servicios.ServicioInvitado;
 import java.awt.Window;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Vector;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JDialog;
@@ -16,9 +20,9 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Katerina Hernandez
  */
-public class PanelCrearInvitacion extends javax.swing.JPanel {
-
-    private Window padre;
+public class PanelCrearInvitacion extends AbstractPanel {
+   
+    private ServicioInvitacion servicioInvitacion = new ServicioInvitacion();
     private ServicioInvitado servicio = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
     private DefaultTableModel model;
@@ -50,12 +54,6 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
             }
         };
         initComponents();
-    }
-
-    public PanelCrearInvitacion(Window padre) {
-        this();
-        this.padre = padre;
-
     }
 
     private Object[] getColumnsNames() {
@@ -100,19 +98,17 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
 
     private void refrescarTabla() {
         ((DefaultTableModel) tablaInivtado.getModel()).setDataVector(getData(), columnasTabla);
-
     }
 
     private boolean validarSeleccion() {
         for (int fila = 0; fila < tablaInivtado.getModel().getRowCount(); fila++) {
-            System.out.println(tablaInivtado.getModel().getValueAt(fila, 0));
             if ((boolean) tablaInivtado.getModel().getValueAt(fila, 0)) {
                 return true;
             }
         }
         return false;
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -250,6 +246,11 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
         );
 
         btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -317,6 +318,46 @@ public class PanelCrearInvitacion extends javax.swing.JPanel {
         }
     }//GEN-LAST:event_btnElegirActionPerformed
 
+    private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        if (evento == null) {
+            JOptionPane.showMessageDialog(padre, "Debe seleccionar un evento antes de guardar las invitaciones.", "Seleccione un evento", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if (!validarSeleccion()) {
+            JOptionPane.showMessageDialog(padre, "Debe seleccionar una o mas personas para guardar las invitaciones", "Elija los invitados", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        if(Sesion.usuarioLogeado == null){
+            JOptionPane.showMessageDialog(padre, "Error faltal del sistema", "No hay usuario logeado", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        boolean erroneo = false;
+        Invitado invitado = null;
+        for (int i = 0; i < tablaInivtado.getModel().getRowCount(); i++) {
+            if ((boolean) model.getValueAt(i, 0)) {
+                try {
+                    //"Id", "Nombre", "Apellido", "Telefono", "Direccion", "Sexo", "Activo"
+                    invitado = new Invitado();
+                    Vector obj = (Vector) model.getDataVector().get(i);
+                    invitado.setId((int) obj.get(1));
+                    invitado.setNombre((String) obj.get(2));
+                    invitado.setApellido((String) obj.get(3));
+                    invitado.setTelefono((String) obj.get(4));
+                    invitado.setDireccion((String) obj.get(5));
+                    invitado.setSexo((String) obj.get(6));
+                    invitado.setActivo((boolean) obj.get(7));
+                    servicioInvitacion.insertar(new Invitacion(0, true, null, null, evento, invitado, Sesion.usuarioLogeado));
+                    padre.dispose();
+                } catch (SQLException ex) {
+                    Logger.getLogger(PanelCrearInvitacion.class.getName()).log(Level.SEVERE, null, ex);
+                    erroneo = true;
+                }
+            }
+        }
+        if (erroneo) {
+            JOptionPane.showMessageDialog(padre, "Algunos invitados no pudieron ser agregados.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_btnGuardarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarInvitado;
     private javax.swing.JButton btnElegir;

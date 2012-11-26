@@ -15,7 +15,7 @@ import java.util.List;
  */
 public class EventoAccesoDatos {
 
-    public static List<Evento> SeleccionarTodo() throws SQLException {
+    public static List<Evento> seleccionarTodo() throws SQLException {
         Conexion.conectar();
         ResultSet rs = Conexion.st.executeQuery("SELECT * FROM evento");
         ArrayList<Evento> evento = new ArrayList<>();
@@ -27,7 +27,7 @@ public class EventoAccesoDatos {
         return evento;
     }
 
-    public static Evento SeleccionarPorId(int id) throws SQLException {
+    public static Evento seleccionarPorId(int id) throws SQLException {
         Conexion.conectar();
         PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM evento WHERE ID_EVENTO = ?");
         ps.setInt(1, id);
@@ -46,37 +46,46 @@ public class EventoAccesoDatos {
             modificar(event);
             return;
         }
-        Conexion.conectar();
-        PreparedStatement ps = Conexion.conn.prepareStatement("INSERT INTO Evento VALUES (SEC_ID_EVENTO.nextval, ?,?,?,?)");
-        ps.setString(1, event.getNombre());
-        ps.setDate(2, new java.sql.Date(event.getFecha().getTime()));
-        ps.setString(3, String.valueOf(Conexion.convertirBooleanAChar(event.isActivo())));
-        ps.setString(4, event.getUbicacion());
-        ps.executeUpdate();
-        Conexion.desconectar();
+        try {
+            Conexion.conectar();
+            PreparedStatement ps = Conexion.conn.prepareStatement("INSERT INTO Evento VALUES (SEC_ID_EVENTO.nextval, ?,?,?,?)");
+            ps.setString(1, event.getNombre());
+            ps.setDate(2, new java.sql.Date(event.getFecha().getTime()));
+            ps.setString(3, String.valueOf(Conexion.convertirBooleanAChar(event.isActivo())));
+            ps.setString(4, event.getUbicacion());
+            ps.executeUpdate();
+        } finally {
+            Conexion.desconectar();
+        }
     }
 
     public static void modificar(Evento event) throws SQLException {
         if (event.getId() <= 0) {
             throw new IllegalArgumentException("No se puede modificar un registro con id 0");
         }
-        Conexion.conectar();
-        PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE evento SET NOMBRE = ?, FECHA = ?, UBICACION = ?, ACTIVO = ? WHERE ID_EVENTO = ?");
-        ps.setString(1, event.getNombre());
-        ps.setDate(2, new java.sql.Date(event.getFecha().getTime()));
-        ps.setString(3, event.getUbicacion());
-        ps.setString(4, String.valueOf(Conexion.convertirBooleanAChar(event.isActivo())));
-        ps.setInt(5, event.getId());
-        ps.executeUpdate();
-        Conexion.desconectar();
+        try {
+            Conexion.conectar();
+            PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE evento SET NOMBRE = ?, FECHA = ?, UBICACION = ?, ACTIVO = ? WHERE ID_EVENTO = ?");
+            ps.setString(1, event.getNombre());
+            ps.setDate(2, new java.sql.Date(event.getFecha().getTime()));
+            ps.setString(3, event.getUbicacion());
+            ps.setString(4, String.valueOf(Conexion.convertirBooleanAChar(event.isActivo())));
+            ps.setInt(5, event.getId());
+            ps.executeUpdate();
+        } finally {
+            Conexion.desconectar();
+        }
     }
 
     public static void eliminar(int id) throws SQLException {
-        Conexion.conectar();
-        PreparedStatement ps = Conexion.conn.prepareStatement("DELETE FROM evento WHERE ID_EVENTO = ?");
-        ps.setInt(1, id);
-        ps.executeUpdate();
-        Conexion.desconectar();
+        try {
+            Conexion.conectar();
+            PreparedStatement ps = Conexion.conn.prepareStatement("DELETE FROM evento WHERE ID_EVENTO = ?");
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        } finally {
+            Conexion.desconectar();
+        }
     }
 
     public static List<Evento> seleccionarEventosDeHoy() throws SQLException {

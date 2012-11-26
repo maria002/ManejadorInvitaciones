@@ -8,11 +8,11 @@ import java.util.ArrayList;
 public class ServicioEvento {
 
     public ArrayList<Evento> seleccionarTodos() throws SQLException {
-        return (ArrayList<Evento>) EventoAccesoDatos.SeleccionarTodo();
+        return (ArrayList<Evento>) EventoAccesoDatos.seleccionarTodo();
     }
 
     public Evento SeleccionarPorId(int id) throws SQLException {
-        return EventoAccesoDatos.SeleccionarPorId(id);
+        return EventoAccesoDatos.seleccionarPorId(id);
     }
 
     public void insertar(Evento e) throws SQLException {

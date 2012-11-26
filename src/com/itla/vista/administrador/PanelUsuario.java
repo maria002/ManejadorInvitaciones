@@ -20,9 +20,8 @@ import javax.swing.JOptionPane;
  *
  * @author Maria Elena, Katerina y Samuel
  */
-public class PanelUsuario extends javax.swing.JPanel {
+public class PanelUsuario extends AbstractPanel {
 
-    private Window padre;
     private ServicioUsuario servicio = new ServicioUsuario();
     private List<Usuario> listaUsuario;
     private int modificandoIdx = 0;

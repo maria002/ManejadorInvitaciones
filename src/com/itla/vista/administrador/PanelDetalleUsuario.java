@@ -20,9 +20,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Maria Elena
  */
-public class PanelDetalleUsuario extends javax.swing.JPanel {
+public class PanelDetalleUsuario extends AbstractPanel {
 
-    private Window padre;
     private ServicioUsuario servicio = new ServicioUsuario();
     private ArrayList<Usuario> usuarios;
     private DefaultTableModel model;
@@ -242,7 +241,7 @@ public class PanelDetalleUsuario extends javax.swing.JPanel {
         ventana.pack();
         ventana.setVisible(true);
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always

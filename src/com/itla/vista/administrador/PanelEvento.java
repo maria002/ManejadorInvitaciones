@@ -10,9 +10,8 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
 
-public class PanelEvento extends javax.swing.JPanel {
+public class PanelEvento extends AbstractPanel {
 
-    private Window padre;
     private ServicioEvento servicio = new ServicioEvento();
     private List<Evento> listaEventos;
     private int modificandoIdx = 0;

@@ -1,5 +1,6 @@
 package com.itla.vista.administrador;
 
+import com.itla.modelo.Sesion;
 import com.itla.modelo.Usuario;
 import com.itla.servicios.ServicioUsuario;
 import java.sql.SQLException;
@@ -116,14 +117,16 @@ public class LoginPanel extends javax.swing.JPanel {
         } else {
             try {
                 usuarios = servicio.autenticar(txtUsuario.getText(), String.valueOf(txtClave.getPassword()));
-                //if (usuarios != null) {
-                    //if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("administracion")) {
-                       setVisible(false); 
-                        new ContenedorPrincipal().setVisible(true);
-                    //} else {
-                        //JOptionPane.showMessageDialog(padre, "Perfil de usuario no implementado", "Error", JOptionPane.ERROR_MESSAGE);
-                    //}
-                //}
+                Sesion.usuarioLogeado = usuarios;
+                if (usuarios != null) {
+                    if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("Administrador")) {
+                        this.txtClave.setText("");
+                        padre.setVisible(false);
+                        new ContenedorPrincipal(padre).setVisible(true);
+                    } else {
+                        JOptionPane.showMessageDialog(padre, "Perfil de usuario no implementado", "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                }
             } catch (SQLException ex) {
                 Logger.getLogger(LoginPanel.class.getName()).log(Level.SEVERE, null, ex);
             }

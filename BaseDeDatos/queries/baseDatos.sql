@@ -75,7 +75,7 @@ increment by 1;
 
 create table Invitacion (
 Id_Invitacion int not null primary key,
-Fecha_Asistencia date not null,
+Fecha_Asistencia date null,
 Razon_visita varchar2(1000),
 Id_evento int not null,
 Id_invitado int not null,

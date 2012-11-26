@@ -15,7 +15,7 @@ public class ServicioInvitado {
     }
     
     public Invitado SeleccionarPorId(int id) throws SQLException {
-        return InvitadoAcessoDatos.SeleccionarPorId(id);
+        return InvitadoAcessoDatos.seleccionarPorId(id);
     }
 
     public void insertar(Invitado e) throws SQLException {
