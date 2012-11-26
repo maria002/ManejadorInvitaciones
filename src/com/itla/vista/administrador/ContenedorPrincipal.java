@@ -37,6 +37,7 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         mdiContainer = new javax.swing.JDesktopPane();
+        jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
         mnSalir = new javax.swing.JMenuItem();
@@ -52,6 +53,11 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manejador Invitaciones");
+
+        jLabel1.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        jLabel1.setText("Manejador de Visitantes");
+        jLabel1.setBounds(150, 130, 382, 50);
+        mdiContainer.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
         jMenu1.setText("Archivo");
 
@@ -218,6 +224,7 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
     private javax.swing.JMenu jMenu7;
