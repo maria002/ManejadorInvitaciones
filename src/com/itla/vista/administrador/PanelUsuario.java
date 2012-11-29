@@ -4,6 +4,7 @@ import com.itla.modelo.PerfilUsuario;
 import com.itla.modelo.Usuario;
 import com.itla.servicios.ServicioPerfilUsuario;
 import com.itla.servicios.ServicioUsuario;
+import com.itla.vista.comun.AbstractPanel;
 import java.awt.Component;
 import java.awt.Window;
 import java.sql.SQLException;

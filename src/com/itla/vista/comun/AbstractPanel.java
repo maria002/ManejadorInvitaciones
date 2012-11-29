@@ -1,4 +1,4 @@
-package com.itla.vista.administrador;
+package com.itla.vista.comun;
 
 import java.awt.Window;
 import javax.swing.JPanel;

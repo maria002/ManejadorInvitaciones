@@ -1,8 +1,10 @@
-package com.itla.vista.administrador;
+package com.itla.vista.comun;
 
 import com.itla.modelo.Sesion;
 import com.itla.modelo.Usuario;
 import com.itla.servicios.ServicioUsuario;
+import com.itla.vista.administrador.ContenedorAdministrador;
+import com.itla.vista.portero.ContenedorPortero;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +20,7 @@ public class LoginPanel extends javax.swing.JPanel {
 
     private JFrame padre;
     private ServicioUsuario servicio = new ServicioUsuario();
+    public String usuariosPanel;
 
     public LoginPanel() {
         initComponents();
@@ -118,11 +121,18 @@ public class LoginPanel extends javax.swing.JPanel {
             try {
                 usuarios = servicio.autenticar(txtUsuario.getText(), String.valueOf(txtClave.getPassword()));
                 Sesion.usuarioLogeado = usuarios;
+
                 if (usuarios != null) {
-                    if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("Administrador")) {
+                    if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("Administracion")) {
                         this.txtClave.setText("");
                         padre.setVisible(false);
-                        new ContenedorPrincipal(padre).setVisible(true);
+                        new ContenedorAdministrador(padre).setVisible(true);
+
+                    } else if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("Portero")) {
+                        this.txtClave.setText("");
+                        padre.setVisible(false);
+                        new ContenedorPortero(padre).setVisible(true);
+
                     } else {
                         JOptionPane.showMessageDialog(padre, "Perfil de usuario no implementado", "Error", JOptionPane.ERROR_MESSAGE);
                     }
@@ -133,7 +143,9 @@ public class LoginPanel extends javax.swing.JPanel {
             if (usuarios == null) {
                 JOptionPane.showMessageDialog(padre, "Usuario Invalido", "Usuario y Clave no coinciden", JOptionPane.WARNING_MESSAGE);
             }
+
         }
+
     }//GEN-LAST:event_btnIniciarSesionActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnCancelar;
@@ -143,4 +155,5 @@ public class LoginPanel extends javax.swing.JPanel {
     private javax.swing.JPasswordField txtClave;
     private javax.swing.JTextField txtUsuario;
     // End of variables declaration//GEN-END:variables
+   
 }

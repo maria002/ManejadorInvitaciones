@@ -2,24 +2,19 @@ package com.itla.vista.portero;
 
 import com.itla.modelo.Invitado;
 import com.itla.servicios.ServicioInvitado;
+import com.itla.vista.comun.AbstractPanel;
 import java.awt.Window;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.JOptionPane;
-import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author Maria Elena
  */
-public class PanelBuscarInvitados extends javax.swing.JPanel {
+public class PanelBuscarInvitados extends AbstractPanel {
 
-    private Window padre;
     private ServicioInvitado servicio = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
     private DefaultTableModel model;

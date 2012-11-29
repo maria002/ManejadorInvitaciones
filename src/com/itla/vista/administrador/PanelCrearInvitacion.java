@@ -6,7 +6,7 @@ import com.itla.modelo.Invitado;
 import com.itla.modelo.Sesion;
 import com.itla.servicios.ServicioInvitacion;
 import com.itla.servicios.ServicioInvitado;
-import java.awt.Window;
+import com.itla.vista.comun.AbstractPanel;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Vector;

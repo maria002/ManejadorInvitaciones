@@ -42,9 +42,9 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Component class="com.itla.vista.administrador.LoginPanel" name="loginPanel1">
+    <Component class="com.itla.vista.comun.LoginPanel" name="loginPanel1">
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.itla.vista.administrador.LoginPanel(this)"/>
+        <AuxValue name="JavaCodeGenerator_CreateCodeCustom" type="java.lang.String" value="new com.itla.vista.comun.LoginPanel(this)"/>
       </AuxValues>
     </Component>
   </SubComponents>

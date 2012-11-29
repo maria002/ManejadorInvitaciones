@@ -1,7 +1,6 @@
 package com.itla.sistema;
 
-import com.itla.vista.administrador.ContenedorPrincipal;
-import com.itla.vista.administrador.LoginVista;
+import com.itla.vista.comun.LoginVista;
 
 /**
  *
@@ -17,14 +16,13 @@ public class Sistema {
                 }
             }
         } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ContenedorPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(Sistema.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new LoginVista().setVisible(true);
-               
             }
         });
     }

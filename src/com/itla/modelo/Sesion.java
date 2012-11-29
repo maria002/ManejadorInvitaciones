@@ -7,6 +7,7 @@ package com.itla.modelo;
 public class Sesion {
 
     public static Usuario usuarioLogeado;
+    public static Evento eventoActual;
 
     private Sesion() {
     }

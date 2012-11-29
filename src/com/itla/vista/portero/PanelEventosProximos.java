@@ -2,6 +2,7 @@ package com.itla.vista.portero;
 
 import com.itla.modelo.Evento;
 import com.itla.servicios.ServicioEvento;
+import com.itla.vista.comun.AbstractPanel;
 import java.awt.Window;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -14,9 +15,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Samuel
  */
-public class PanelEventosProximos extends javax.swing.JPanel {
+public class PanelEventosProximos extends AbstractPanel {
 
-    private Window padre;
     private ServicioEvento servicio = new ServicioEvento();
     private ArrayList<Evento> eventos;
     DefaultTableModel model;

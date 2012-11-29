@@ -2,6 +2,7 @@ package com.itla.vista.administrador;
 
 import com.itla.modelo.Evento;
 import com.itla.servicios.ServicioEvento;
+import com.itla.vista.comun.AbstractPanel;
 import java.awt.Window;
 import java.sql.SQLException;
 import java.text.ParseException;

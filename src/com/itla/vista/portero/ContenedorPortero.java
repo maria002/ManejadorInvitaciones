@@ -1,30 +1,36 @@
-package com.itla.vista.administrador;
+package com.itla.vista.portero;
 
 import com.itla.modelo.Sesion;
+import com.itla.vista.comun.AbstractPanel;
 import java.awt.BorderLayout;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
+
 
 /**
  *
  * @author Maria Elena
  */
-public class ContenedorPrincipal extends javax.swing.JFrame {
+public class ContenedorPortero extends javax.swing.JFrame {
 
-    private JFrame padre;
+    private JFrame padre; 
+       
     /**
      * Creates new form ContenedorPrincipal
      */
-    public ContenedorPrincipal() {
+    public ContenedorPortero() {
         initComponents();
+        abrirVentana(new PanelEventosActuales(this), "Evento Actual");
     }
-    
-    public ContenedorPrincipal(JFrame padre){
+
+    public ContenedorPortero(JFrame padre) {
         this();
         this.padre = padre;
+        
     }
 
     /**
@@ -37,29 +43,33 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
     private void initComponents() {
 
         mdiContainer = new javax.swing.JDesktopPane();
+        programName = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
+        menuBar = new javax.swing.JMenuBar();
+        mnArchivo = new javax.swing.JMenu();
         mnSalir = new javax.swing.JMenuItem();
         mnCerrarSeccion = new javax.swing.JMenuItem();
-        jMenu2 = new javax.swing.JMenu();
-        mnEventos = new javax.swing.JMenuItem();
-        mnUsuarios = new javax.swing.JMenuItem();
-        mnInvitaciones = new javax.swing.JMenuItem();
-        mnInvitados = new javax.swing.JMenuItem();
-        mnPerfilUsuario = new javax.swing.JMenuItem();
-        jMenu7 = new javax.swing.JMenu();
+        mnAdministrar = new javax.swing.JMenu();
+        mnEventosAct = new javax.swing.JMenuItem();
+        mnBuscarInv = new javax.swing.JMenuItem();
+        mnEventosProx = new javax.swing.JMenuItem();
+        mnListadoComp = new javax.swing.JMenuItem();
+        mnAcercaDe = new javax.swing.JMenu();
         mnAyuda = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manejador Invitaciones");
 
-        jLabel1.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
-        jLabel1.setText("Manejador de Visitantes");
-        jLabel1.setBounds(150, 130, 382, 50);
+        programName.setFont(new java.awt.Font("Arial", 0, 36)); // NOI18N
+        programName.setText("Manejador de Visitantes");
+        programName.setBounds(150, 130, 382, 50);
+        mdiContainer.add(programName, javax.swing.JLayeredPane.DEFAULT_LAYER);
+
+        jLabel1.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
+        jLabel1.setBounds(564, 10, 100, 20);
         mdiContainer.add(jLabel1, javax.swing.JLayeredPane.DEFAULT_LAYER);
 
-        jMenu1.setText("Archivo");
+        mnArchivo.setText("Archivo");
 
         mnSalir.setText("Salir");
         mnSalir.addActionListener(new java.awt.event.ActionListener() {
@@ -67,7 +77,7 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
                 mnSalirActionPerformed(evt);
             }
         });
-        jMenu1.add(mnSalir);
+        mnArchivo.add(mnSalir);
 
         mnCerrarSeccion.setText("Cerrar Seccion");
         mnCerrarSeccion.addActionListener(new java.awt.event.ActionListener() {
@@ -75,62 +85,54 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
                 mnCerrarSeccionActionPerformed(evt);
             }
         });
-        jMenu1.add(mnCerrarSeccion);
+        mnArchivo.add(mnCerrarSeccion);
 
-        jMenuBar1.add(jMenu1);
+        menuBar.add(mnArchivo);
 
-        jMenu2.setText("Administrar");
+        mnAdministrar.setText("Opciones");
 
-        mnEventos.setText("Eventos");
-        mnEventos.addActionListener(new java.awt.event.ActionListener() {
+        mnEventosAct.setText("Eventos Actuales");
+        mnEventosAct.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnEventosActionPerformed(evt);
+                mnEventosActActionPerformed(evt);
             }
         });
-        jMenu2.add(mnEventos);
+        mnAdministrar.add(mnEventosAct);
 
-        mnUsuarios.setText("Usuarios");
-        mnUsuarios.addActionListener(new java.awt.event.ActionListener() {
+        mnBuscarInv.setText("Buscar Invitados");
+        mnBuscarInv.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnUsuariosActionPerformed(evt);
+                mnBuscarInvActionPerformed(evt);
             }
         });
-        jMenu2.add(mnUsuarios);
+        mnAdministrar.add(mnBuscarInv);
 
-        mnInvitaciones.setText("Invitaciones");
-        mnInvitaciones.addActionListener(new java.awt.event.ActionListener() {
+        mnEventosProx.setText("Eventos Proximos");
+        mnEventosProx.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnInvitacionesActionPerformed(evt);
+                mnEventosProxActionPerformed(evt);
             }
         });
-        jMenu2.add(mnInvitaciones);
+        mnAdministrar.add(mnEventosProx);
 
-        mnInvitados.setText("Invitados");
-        mnInvitados.addActionListener(new java.awt.event.ActionListener() {
+        mnListadoComp.setText("Listado Completo");
+        mnListadoComp.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnInvitadosActionPerformed(evt);
+                mnListadoCompActionPerformed(evt);
             }
         });
-        jMenu2.add(mnInvitados);
+        mnAdministrar.add(mnListadoComp);
 
-        mnPerfilUsuario.setText("Perfil Usuario");
-        mnPerfilUsuario.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                mnPerfilUsuarioActionPerformed(evt);
-            }
-        });
-        jMenu2.add(mnPerfilUsuario);
+        menuBar.add(mnAdministrar);
 
-        jMenuBar1.add(jMenu2);
-
-        jMenu7.setText("Acerca de");
+        mnAcercaDe.setText("Acerca de");
 
         mnAyuda.setText("Ayuda");
-        jMenu7.add(mnAyuda);
+        mnAcercaDe.add(mnAyuda);
 
-        jMenuBar1.add(jMenu7);
+        menuBar.add(mnAcercaDe);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(menuBar);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -150,25 +152,25 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_mnSalirActionPerformed
 
-    private void mnEventosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEventosActionPerformed
-        abrirVentana(new PanelDetalleEvento(null, false), "Eventos");
-    }//GEN-LAST:event_mnEventosActionPerformed
+    private void mnBuscarInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnBuscarInvActionPerformed
+        abrirVentana(new PanelBuscarInvitados(null), "Eventos");
+    }//GEN-LAST:event_mnBuscarInvActionPerformed
 
-    private void mnUsuariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnUsuariosActionPerformed
-        abrirVentana(new PanelDetalleUsuario(null), "Usuarios");
-    }//GEN-LAST:event_mnUsuariosActionPerformed
+    private void mnEventosActActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEventosActActionPerformed
+        abrirVentana(new PanelEventosActuales(null), "Usuarios");
+    }//GEN-LAST:event_mnEventosActActionPerformed
 
-    private void mnInvitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnInvitacionesActionPerformed
-        abrirVentana(new PanelCrearInvitacion(), "Invitacion");
-    }//GEN-LAST:event_mnInvitacionesActionPerformed
+    private void mnEventosProxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEventosProxActionPerformed
+        abrirVentana(new PanelEventosProximos(null), "Invitacion");
+    }//GEN-LAST:event_mnEventosProxActionPerformed
 
-    private void mnInvitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnInvitadosActionPerformed
-        abrirVentana(new PanelDetalleInvitado(), "Invitados");
-    }//GEN-LAST:event_mnInvitadosActionPerformed
-
-    private void mnPerfilUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnPerfilUsuarioActionPerformed
-        abrirVentana(new PanelDetallePerfilUsuario(), "Perfiles De Usuario");
-    }//GEN-LAST:event_mnPerfilUsuarioActionPerformed
+    private void mnListadoCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnListadoCompActionPerformed
+        if (Sesion.eventoActual == null) {
+            JOptionPane.showMessageDialog(padre, "Debe elejir el evento que esta trabajando", "Elija el evento", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        abrirVentana(new PanelListadoCompleto(null, null), "Invitados");
+    }//GEN-LAST:event_mnListadoCompActionPerformed
 
     private void mnCerrarSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCerrarSeccionActionPerformed
         Sesion.usuarioLogeado = null;
@@ -178,14 +180,20 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
 
     public void abrirVentana(AbstractPanel panel, String titulo) {
         JInternalFrame frame = new JInternalFrame(titulo, true, true, true, true);
+
         frame.add(panel, BorderLayout.CENTER);
         frame.pack();
         try {
             frame.setSelected(true);
         } catch (PropertyVetoException ex) {
-            Logger.getLogger(ContenedorPrincipal.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ContenedorPortero.class.getName()).log(Level.SEVERE, null, ex);
         }
         mdiContainer.add(frame);
+        try {
+            frame.setMaximum(true);
+        } catch (PropertyVetoException ex) {
+            Logger.getLogger(ContenedorPortero.class.getName()).log(Level.SEVERE, null, ex);
+        }
         frame.setVisible(true);
     }
 
@@ -206,37 +214,37 @@ public class ContenedorPrincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(ContenedorPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContenedorPortero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(ContenedorPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContenedorPortero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(ContenedorPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContenedorPortero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(ContenedorPrincipal.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(ContenedorPortero.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
             public void run() {
-                new ContenedorPrincipal().setVisible(true);
+                new ContenedorPortero().setVisible(true);
             }
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenu jMenu7;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JDesktopPane mdiContainer;
+    private javax.swing.JMenuBar menuBar;
+    private javax.swing.JMenu mnAcercaDe;
+    private javax.swing.JMenu mnAdministrar;
+    private javax.swing.JMenu mnArchivo;
     private javax.swing.JMenuItem mnAyuda;
+    private javax.swing.JMenuItem mnBuscarInv;
     private javax.swing.JMenuItem mnCerrarSeccion;
-    private javax.swing.JMenuItem mnEventos;
-    private javax.swing.JMenuItem mnInvitaciones;
-    private javax.swing.JMenuItem mnInvitados;
-    private javax.swing.JMenuItem mnPerfilUsuario;
+    private javax.swing.JMenuItem mnEventosAct;
+    private javax.swing.JMenuItem mnEventosProx;
+    private javax.swing.JMenuItem mnListadoComp;
     private javax.swing.JMenuItem mnSalir;
-    private javax.swing.JMenuItem mnUsuarios;
+    private javax.swing.JLabel programName;
     // End of variables declaration//GEN-END:variables
 }

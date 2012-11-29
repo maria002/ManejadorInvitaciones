@@ -1,9 +1,9 @@
 package com.itla.vista.portero;
 
 import com.itla.modelo.Evento;
-import com.itla.vista.administrador.*;
 import com.itla.modelo.Invitado;
 import com.itla.servicios.ServicioInvitado;
+import com.itla.vista.comun.AbstractPanel;
 import java.awt.Window;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -16,9 +16,8 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author Maria Elena
  */
-public class PanelListadoCompleto extends javax.swing.JPanel {
+public class PanelListadoCompleto extends AbstractPanel {
 
-    private Window padre;
     private ServicioInvitado servicio = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
     private DefaultTableModel model;
@@ -82,7 +81,7 @@ public class PanelListadoCompleto extends javax.swing.JPanel {
             }
             invitados = servicio.seleccionarTodos();
         } catch (SQLException ex) {
-            Logger.getLogger(PanelDetalleEvento.class
+            Logger.getLogger(PanelListadoCompleto.class
                     .getName()).log(Level.SEVERE, null, ex);
             JOptionPane.showMessageDialog(padre,
                     "Error cargando los datos", "Error cargando los datos", JOptionPane.ERROR_MESSAGE);

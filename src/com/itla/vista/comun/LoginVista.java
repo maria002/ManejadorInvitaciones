@@ -1,4 +1,4 @@
-package com.itla.vista.administrador;
+package com.itla.vista.comun;
 
 /**
  *
@@ -22,7 +22,7 @@ public class LoginVista extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        loginPanel1 = new com.itla.vista.administrador.LoginPanel(this);
+        loginPanel1 = new com.itla.vista.comun.LoginPanel(this);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Iniciar Sesion");
@@ -83,6 +83,6 @@ public class LoginVista extends javax.swing.JFrame {
         });
     }
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private com.itla.vista.administrador.LoginPanel loginPanel1;
+    private com.itla.vista.comun.LoginPanel loginPanel1;
     // End of variables declaration//GEN-END:variables
 }

@@ -25,7 +25,11 @@ public class Conexion {
 
     static {
         try {
-            LeerConexion();
+            try {
+                LeerConexion();
+            } catch (SQLException ex) {
+                Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
+            }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(Conexion.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -36,7 +40,7 @@ public class Conexion {
     private Conexion() {
     }
 
-    public static void LeerConexion() throws FileNotFoundException, IOException {
+    public static void LeerConexion() throws FileNotFoundException, IOException, SQLException {
         BufferedReader bf = new BufferedReader(new FileReader("config.cfg"));
         String linea = null;
         datosConexion = new HashMap<>();
@@ -44,20 +48,15 @@ public class Conexion {
             datosConexion.put(linea.split("=")[0], linea.split("=")[1]);
         }
         bf.close();
+        
+        //aqui creamos un datasource para iniciar la conexion 
+        ods = new OracleDataSource();
+        // aqui creamos un url de conexion 
+        ods.setURL("jdbc:oracle:thin:" + datosConexion.get("BD") + "/" + datosConexion.get("CLAVE") + "@" + datosConexion.get("SERVIDOR") + ":" + datosConexion.get("PUERTO") + ":XE");
+
     }
 
     public static void conectar() throws SQLException {
-
-        //aqui creamos un datasource para iniciar la conexion 
-        OracleDataSource ods = new OracleDataSource();
-        //aqui creamos un url de conexion 
-        ods.setURL("jdbc:oracle:thin:JEHOVA/1234@MININT-OAII0R6:1521:XE");
-
-//      aqui creamos un datasource para iniciar la conexion 
-        //ods = new OracleDataSource();
-        // aqui creamos un url de conexion 
-        //ods.setURL("jdbc:oracle:thin:" + datosConexion.get("BD") + "/" + datosConexion.get("CLAVE") + "@" + datosConexion.get("SERVIDOR") + ":" + datosConexion.get("PUERTO") + ":XE");
-
         conn = ods.getConnection();
         st = conn.createStatement();
     }

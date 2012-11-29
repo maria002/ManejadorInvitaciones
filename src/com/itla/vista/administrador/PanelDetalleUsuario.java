@@ -2,6 +2,7 @@ package com.itla.vista.administrador;
 
 import com.itla.modelo.Usuario;
 import com.itla.servicios.ServicioUsuario;
+import com.itla.vista.comun.AbstractPanel;
 import java.awt.Window;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
