@@ -5,7 +5,6 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +45,23 @@ public class InvitacionAccesoDatos {
         return invitacion;
     }
 
+    public static List<Invitacion> seleccionarPorEventoId(int id) throws SQLException{
+        Conexion.conectar();
+        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM invitacion WHERE ID_EVENTO = ?");
+        ps.setInt(1, id);
+        ResultSet rs = ps.executeQuery();
+        ArrayList<Invitacion> invitaciones = new ArrayList<>();
+        while (rs.next()) {
+            invitaciones.add(new Invitacion(rs.getInt(1), Conexion.convertirBoolean(rs.getString("activo")),
+                    rs.getDate("fecha_asistencia"), rs.getString("Razon_visita"),
+                    EventoAccesoDatos.seleccionarPorId(rs.getInt("Id_evento")),
+                    InvitadoAcessoDatos.seleccionarPorId(rs.getInt("Id_invitado")),
+                    UsuarioAccesoDatos.seleccionarPorId(rs.getInt("Id_usuario"))));
+        }
+        Conexion.desconectar();
+        return invitaciones;
+    }
+    
     public static void insertar(Invitacion inv) throws SQLException {
         if (inv.getId() > 0) {
             modificar(inv);
@@ -100,4 +116,5 @@ public class InvitacionAccesoDatos {
             Conexion.desconectar();
         }
     }
+    
 }

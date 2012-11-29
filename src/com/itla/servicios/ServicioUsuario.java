@@ -16,7 +16,7 @@ public class ServicioUsuario {
         return (ArrayList<Usuario>) UsuarioAccesoDatos.seleccionarTodo();
     }
     
-    public Usuario SeleccionarPorId(int id) throws SQLException {
+    public Usuario seleccionarPorId(int id) throws SQLException {
         return UsuarioAccesoDatos.seleccionarPorId(id);
     }
 

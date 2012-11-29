@@ -74,7 +74,7 @@ public class PanelDetalleUsuario extends AbstractPanel {
                     target.getModel().getValueAt(row, column);
                     try {
                         ArrayList<Usuario> usuarios = new ArrayList<>();
-                        usuarios.add(servicio.SeleccionarPorId((int) target.getValueAt(row, 1)));
+                        usuarios.add(servicio.seleccionarPorId((int) target.getValueAt(row, 1)));
                         abrirDetalle(usuarios);
                         btnRefrescar();
                         refrescarTabla();
@@ -144,7 +144,7 @@ public class PanelDetalleUsuario extends AbstractPanel {
         for (int i = 0; i < model.getRowCount(); i++) {
             if ((boolean) model.getValueAt(i, 0)) {
                 try {
-                    usuarios.add(servicio.SeleccionarPorId((Integer) model.getValueAt(i, 1)));
+                    usuarios.add(servicio.seleccionarPorId((Integer) model.getValueAt(i, 1)));
                 } catch (SQLException ex) {
                     Logger.getLogger(PanelDetalleUsuario.class
                             .getName()).log(Level.SEVERE, null, ex);

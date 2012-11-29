@@ -4,6 +4,7 @@ import com.itla.modelo.Evento;
 import com.itla.modelo.Invitacion;
 import com.itla.modelo.Invitado;
 import com.itla.modelo.Sesion;
+import com.itla.servicios.ServicioEvento;
 import com.itla.servicios.ServicioInvitacion;
 import com.itla.servicios.ServicioInvitado;
 import com.itla.vista.comun.AbstractPanel;
@@ -23,7 +24,8 @@ import javax.swing.table.DefaultTableModel;
 public class PanelCrearInvitacion extends AbstractPanel {
    
     private ServicioInvitacion servicioInvitacion = new ServicioInvitacion();
-    private ServicioInvitado servicio = new ServicioInvitado();
+    private ServicioInvitado servicioInvitado = new ServicioInvitado();
+    private ServicioEvento servicioEvento = new ServicioEvento();
     private ArrayList<Invitado> invitados;
     private DefaultTableModel model;
     private Object[] columnasTabla;
@@ -87,7 +89,7 @@ public class PanelCrearInvitacion extends AbstractPanel {
             if (invitados != null) {
                 invitados.clear();
             }
-            invitados = servicio.seleccionarTodos();
+            invitados = servicioInvitado.seleccionarTodos();
         } catch (SQLException ex) {
             Logger.getLogger(PanelDetalleEvento.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -96,6 +98,17 @@ public class PanelCrearInvitacion extends AbstractPanel {
         }
     }
 
+    private void refrescarEvento(){
+        if(evento != null){
+            try {
+                evento = servicioEvento.seleccionarPorId(evento.getId());
+            } catch (SQLException ex) {
+                JOptionPane.showMessageDialog(padre, "Error refrescando la data!", "Error", JOptionPane.ERROR_MESSAGE);
+                Logger.getLogger(PanelCrearInvitacion.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     private void refrescarTabla() {
         ((DefaultTableModel) tablaInivtado.getModel()).setDataVector(getData(), columnasTabla);
     }
@@ -129,12 +142,12 @@ public class PanelCrearInvitacion extends AbstractPanel {
         labelID = new javax.swing.JLabel();
         txtId = new javax.swing.JTextField();
         btnElegir = new javax.swing.JButton();
-        panelEligeInvitado = new javax.swing.JPanel();
+        jPanel3 = new javax.swing.JPanel();
+        btnGuardar = new javax.swing.JButton();
+        btnRefrescar = new javax.swing.JButton();
         btnAgregarInvitado = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablaInivtado = new javax.swing.JTable();
-        jPanel3 = new javax.swing.JPanel();
-        btnGuardar = new javax.swing.JButton();
 
         jLabel5.setText("jLabel5");
 
@@ -186,7 +199,7 @@ public class PanelCrearInvitacion extends AbstractPanel {
                             .addComponent(txtId, javax.swing.GroupLayout.DEFAULT_SIZE, 173, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(btnElegir)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(427, Short.MAX_VALUE))
         );
 
         panelElijaEventoLayout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {txtFecha, txtNombre, txtUbicacion});
@@ -213,7 +226,40 @@ public class PanelCrearInvitacion extends AbstractPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        panelEligeInvitado.setBorder(javax.swing.BorderFactory.createTitledBorder("Elija los invitados"));
+        btnGuardar.setText("Guardar");
+        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGuardarActionPerformed(evt);
+            }
+        });
+
+        btnRefrescar.setText("Refrescar");
+        btnRefrescar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnRefrescarActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
+        jPanel3.setLayout(jPanel3Layout);
+        jPanel3Layout.setHorizontalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnGuardar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(btnRefrescar)
+                .addContainerGap())
+        );
+        jPanel3Layout.setVerticalGroup(
+            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel3Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(btnGuardar)
+                    .addComponent(btnRefrescar))
+                .addGap(0, 11, Short.MAX_VALUE))
+        );
 
         btnAgregarInvitado.setText("Agregar nuevo invitado");
         btnAgregarInvitado.addActionListener(new java.awt.event.ActionListener() {
@@ -225,62 +271,22 @@ public class PanelCrearInvitacion extends AbstractPanel {
         tablaInivtado.setModel(model);
         jScrollPane1.setViewportView(tablaInivtado);
 
-        javax.swing.GroupLayout panelEligeInvitadoLayout = new javax.swing.GroupLayout(panelEligeInvitado);
-        panelEligeInvitado.setLayout(panelEligeInvitadoLayout);
-        panelEligeInvitadoLayout.setHorizontalGroup(
-            panelEligeInvitadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEligeInvitadoLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnAgregarInvitado)
-                .addContainerGap())
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, panelEligeInvitadoLayout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE))
-        );
-        panelEligeInvitadoLayout.setVerticalGroup(
-            panelEligeInvitadoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(panelEligeInvitadoLayout.createSequentialGroup()
-                .addComponent(btnAgregarInvitado)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 295, Short.MAX_VALUE))
-        );
-
-        btnGuardar.setText("Guardar");
-        btnGuardar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGuardarActionPerformed(evt);
-            }
-        });
-
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel3Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(btnGuardar)
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(btnGuardar)
-                .addGap(0, 11, Short.MAX_VALUE))
-        );
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(panelElijaEvento, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(panelEligeInvitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel3, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(panelElijaEvento, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 240, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(137, 137, 137)
+                                .addComponent(btnAgregarInvitado)))
+                        .addGap(0, 500, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -289,7 +295,9 @@ public class PanelCrearInvitacion extends AbstractPanel {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(panelElijaEvento, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
-                .addComponent(panelEligeInvitado, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(70, 70, 70)
+                .addComponent(btnAgregarInvitado)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -358,10 +366,18 @@ public class PanelCrearInvitacion extends AbstractPanel {
             JOptionPane.showMessageDialog(padre, "Algunos invitados no pudieron ser agregados.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_btnGuardarActionPerformed
+
+    private void btnRefrescarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRefrescarActionPerformed
+        refrescar();
+        refrescarTabla();
+        refrescarEvento();
+    }//GEN-LAST:event_btnRefrescarActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarInvitado;
     private javax.swing.JButton btnElegir;
     private javax.swing.JButton btnGuardar;
+    private javax.swing.JButton btnRefrescar;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
@@ -369,7 +385,6 @@ public class PanelCrearInvitacion extends AbstractPanel {
     private javax.swing.JLabel labelID;
     private javax.swing.JLabel labelNombre;
     private javax.swing.JLabel labelUbicacion;
-    private javax.swing.JPanel panelEligeInvitado;
     private javax.swing.JPanel panelElijaEvento;
     private javax.swing.JTable tablaInivtado;
     private javax.swing.JTextField txtFecha;

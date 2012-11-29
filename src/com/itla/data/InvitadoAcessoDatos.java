@@ -23,7 +23,7 @@ public class InvitadoAcessoDatos {
 
     public static Invitado seleccionarPorId(int id) throws SQLException {
         Conexion.conectar();
-        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM evento WHERE ID_EVENTO = ?");
+        PreparedStatement ps = Conexion.conn.prepareStatement("SELECT * FROM invitado WHERE id_invitado = ?");
         ps.setInt(1, id);
         ResultSet rs = ps.executeQuery();
         Invitado invitado = null;
@@ -60,7 +60,7 @@ public class InvitadoAcessoDatos {
         }
         try {
             Conexion.conectar();
-            PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE evento SET NOMBRE = ?, FECHA = ?, UBICACION = ?, ACTIVO = ? WHERE ID_EVENTO = ?");
+            PreparedStatement ps = Conexion.conn.prepareStatement("UPDATE invitado SET NOMBRE = ?, FECHA = ?, UBICACION = ?, ACTIVO = ? WHERE id_invitado = ?");
             ps.setString(1, invt.getNombre());
             ps.setString(2, invt.getApellido());
             ps.setString(3, invt.getDireccion());

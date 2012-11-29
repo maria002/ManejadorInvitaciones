@@ -11,7 +11,7 @@ public class ServicioEvento {
         return (ArrayList<Evento>) EventoAccesoDatos.seleccionarTodo();
     }
 
-    public Evento SeleccionarPorId(int id) throws SQLException {
+    public Evento seleccionarPorId(int id) throws SQLException {
         return EventoAccesoDatos.seleccionarPorId(id);
     }
 

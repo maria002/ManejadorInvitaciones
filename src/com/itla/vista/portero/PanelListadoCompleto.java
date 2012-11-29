@@ -1,7 +1,9 @@
 package com.itla.vista.portero;
 
-import com.itla.modelo.Evento;
+import com.itla.modelo.Invitacion;
 import com.itla.modelo.Invitado;
+import com.itla.modelo.Sesion;
+import com.itla.servicios.ServicioInvitacion;
 import com.itla.servicios.ServicioInvitado;
 import com.itla.vista.comun.AbstractPanel;
 import java.awt.Window;
@@ -18,13 +20,14 @@ import javax.swing.table.DefaultTableModel;
  */
 public class PanelListadoCompleto extends AbstractPanel {
 
-    private ServicioInvitado servicio = new ServicioInvitado();
+    private ServicioInvitacion servicioInvitacion = new ServicioInvitacion();
+    private ServicioInvitado servicioInvitado = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
     private DefaultTableModel model;
     private Object[] columnasTabla;
-    private Evento evento;
 
     public PanelListadoCompleto() {
+        invitados = new ArrayList<>();
         refrescar();
         columnasTabla = getColumnsNames();
         model = new javax.swing.table.DefaultTableModel(getData(), columnasTabla) {
@@ -48,10 +51,9 @@ public class PanelListadoCompleto extends AbstractPanel {
         initComponents();
     }
 
-    public PanelListadoCompleto(Window padre, Evento evento) {
+    public PanelListadoCompleto(Window padre) {
         this();
         this.padre = padre;
-        this.evento = evento;
     }
 
     private Object[] getColumnsNames() {
@@ -75,11 +77,27 @@ public class PanelListadoCompleto extends AbstractPanel {
     }
 
     private void refrescar() {
+        if(Sesion.eventoActual == null){
+            JOptionPane.showMessageDialog(padre, "Debe elegir un evento antes de ver la lista de invitados", "Eliga el evento que esta trabajando", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
         try {
             if (invitados != null) {
                 invitados.clear();
             }
-            invitados = servicio.seleccionarTodos();
+            ArrayList<Invitacion> listaInvitaciones = (ArrayList<Invitacion>)servicioInvitacion.seleccionarPorEventoId(Sesion.eventoActual.getId());
+            if(listaInvitaciones == null){
+                JOptionPane.showMessageDialog(padre, "No hay invitaciones para este evento.", "No hay invitados", JOptionPane.INFORMATION_MESSAGE);
+                return;
+            }
+            Invitado invitado = null;
+            for(int i = 0; i < listaInvitaciones.size(); i++){
+                invitado  = listaInvitaciones.get(i).getInvitado();
+                if(invitado == null) {
+                    continue;
+                }
+                invitados.add(invitado);
+            }
         } catch (SQLException ex) {
             Logger.getLogger(PanelListadoCompleto.class
                     .getName()).log(Level.SEVERE, null, ex);
@@ -101,7 +119,6 @@ public class PanelListadoCompleto extends AbstractPanel {
         tablaInivtado = new javax.swing.JTable();
         jPanel1 = new javax.swing.JPanel();
         btnRefrescar = new javax.swing.JButton();
-        jLabel1 = new javax.swing.JLabel();
 
         tablaInivtado.setModel(model);
         jScrollPane1.setViewportView(tablaInivtado);
@@ -124,9 +141,6 @@ public class PanelListadoCompleto extends AbstractPanel {
             }
         });
 
-        jLabel1.setFont(new java.awt.Font("Arial", 1, 24)); // NOI18N
-        jLabel1.setText("Lista de Invitados");
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -143,18 +157,12 @@ public class PanelListadoCompleto extends AbstractPanel {
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 760, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
-            .addGroup(layout.createSequentialGroup()
-                .addGap(39, 39, 39)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 253, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 322, Short.MAX_VALUE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -169,7 +177,6 @@ public class PanelListadoCompleto extends AbstractPanel {
     }//GEN-LAST:event_btnRefrescarActionPerformed
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnRefrescar;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tablaInivtado;

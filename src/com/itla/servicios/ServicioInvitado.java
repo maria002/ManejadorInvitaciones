@@ -14,7 +14,7 @@ public class ServicioInvitado {
         return (ArrayList<Invitado>) InvitadoAcessoDatos.seleccionarTodo();
     }
     
-    public Invitado SeleccionarPorId(int id) throws SQLException {
+    public Invitado seleccionarPorId(int id) throws SQLException {
         return InvitadoAcessoDatos.seleccionarPorId(id);
     }
 

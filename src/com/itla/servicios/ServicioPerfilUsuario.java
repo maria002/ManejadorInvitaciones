@@ -11,7 +11,7 @@ public class ServicioPerfilUsuario {
         return (ArrayList<PerfilUsuario>) PerfilUsuarioAccesoDatos.SeleccionarTodo();
     }
     
-    public PerfilUsuario SeleccionarPorId(int id) throws SQLException {
+    public PerfilUsuario seleccionarPorId(int id) throws SQLException {
         return PerfilUsuarioAccesoDatos.SeleccionarPorId(id);
     }
 

@@ -169,7 +169,7 @@ public class ContenedorPortero extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(padre, "Debe elejir el evento que esta trabajando", "Elija el evento", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        abrirVentana(new PanelListadoCompleto(null, null), "Invitados");
+        abrirVentana(new PanelListadoCompleto(null), "Invitados");
     }//GEN-LAST:event_mnListadoCompActionPerformed
 
     private void mnCerrarSeccionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnCerrarSeccionActionPerformed
