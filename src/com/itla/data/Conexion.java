@@ -41,14 +41,14 @@ public class Conexion {
     }
 
     public static void LeerConexion() throws FileNotFoundException, IOException, SQLException {
-        BufferedReader bf = new BufferedReader(new FileReader("config.cfg"));
-        String linea = null;
-        datosConexion = new HashMap<>();
-        while ((linea = bf.readLine()) != null) {
-            datosConexion.put(linea.split("=")[0], linea.split("=")[1]);
+        try (BufferedReader bf = new BufferedReader(new FileReader("config.cfg"))) {
+            String linea = null;
+            datosConexion = new HashMap<>();
+            while ((linea = bf.readLine()) != null) {
+                datosConexion.put(linea.split("=")[0], linea.split("=")[1]);
+            }
         }
-        bf.close();
-        
+
         //aqui creamos un datasource para iniciar la conexion 
         ods = new OracleDataSource();
         // aqui creamos un url de conexion 

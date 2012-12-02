@@ -64,14 +64,14 @@ public class UsuarioAccesoDatos {
         try {
             Conexion.conectar();
             String query = "UPDATE Usuario SET nombre = ?, Apellido = ?,  Activo = ?, Id_Perfil_Usuario = ? WHERE id = ?";
-            if(usuario.getClave() != null && !usuario.getClave().isEmpty()){
+            if (usuario.getClave() != null && !usuario.getClave().isEmpty()) {
                 query = "UPDATE Usuario SET nombre = ?, Apellido = ?, Clave = ?, Activo = ?, Id_Perfil_Usuario = ? WHERE id = ?";
             }
             int idx = 0;
             PreparedStatement ps = Conexion.conn.prepareStatement(query);
             ps.setString(++idx, usuario.getNombre());
             ps.setString(++idx, usuario.getApellido());
-            if(usuario.getClave() != null && !usuario.getClave().isEmpty()){
+            if (usuario.getClave() != null && !usuario.getClave().isEmpty()) {
                 ps.setString(++idx, usuario.getClave());
             }
             ps.setString(++idx, String.valueOf(Conexion.convertirBooleanAChar(usuario.isActivo())));

@@ -4,7 +4,6 @@ import com.itla.modelo.Evento;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,7 +90,7 @@ public class EventoAccesoDatos {
     public static List<Evento> seleccionarEventosDeHoy() throws SQLException {
         Conexion.conectar();
         String query = "SELECT * FROM Evento "
-                + "WHERE TO_CHAR(FECHA, 'dd') = TO_CHAR(TO_DATE('" + new SimpleDateFormat("dd/M/yyyy").format(new Date()) + "', 'DD/MM/YY'), 'DD')";
+                + "WHERE TO_CHAR(FECHA, 'dd') = TO_CHAR(TO_DATE('" + Evento.formato.format(new Date()) + "', 'DD/MM/YY'), 'DD')";
         PreparedStatement ps = Conexion.conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
         List<Evento> eventos = new ArrayList<>();
@@ -106,7 +105,7 @@ public class EventoAccesoDatos {
     public static List<Evento> seleccionarEventosProximos() throws SQLException {
         Conexion.conectar();
         String query = "SELECT * FROM Evento "
-                + "WHERE TO_CHAR(FECHA, 'dd') > TO_CHAR(TO_DATE('" + new SimpleDateFormat("dd/M/yyyy").format(new Date()) + "', 'DD/MM/YY'), 'DD')";
+                + "WHERE TO_CHAR(FECHA, 'dd') > TO_CHAR(TO_DATE('" + Evento.formato.format(new Date()) + "', 'DD/MM/YY'), 'DD')";
         PreparedStatement ps = Conexion.conn.prepareStatement(query);
         ResultSet rs = ps.executeQuery();
         List<Evento> eventos = new ArrayList<>();

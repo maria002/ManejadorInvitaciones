@@ -75,12 +75,11 @@ increment by 1;
 
 create table Invitacion (
 Id_Invitacion int not null primary key,
+Fecha_Invitacion date not null,
 Fecha_Asistencia date null,
 Razon_visita varchar2(1000),
 Id_evento int not null,
 Id_invitado int not null,
-Activo char(1) default '1' not null
-CONSTRAINT check_activo_invitacion CHECK (Activo IN ('1', '0')),
 Id_usuario int not null
 );
 
@@ -102,3 +101,10 @@ references Usuario(Id);
 create sequence sec_Id_invitacion
 start with 1
 increment by 1;
+
+insert into Perfil_Usuario(Id, Nombre, Activo) VALUES(sec_Id_Perfil_Usuario.nextval, 'Administrador', '1');
+insert into Perfil_Usuario(Id, Nombre, Activo) VALUES(sec_Id_Perfil_Usuario.nextval, 'Portero', '1');
+insert into USUARIO(Id, Nombre, Apellido, Cuenta, Clave, Activo, Id_Perfil_Usuario) VALUES
+    (sec_IdUsuario.nextval, 'Administrador', 'Administrador', 'administrador', '1234', '1', 1);
+insert into USUARIO(Id, Nombre, Apellido, Cuenta, Clave, Activo, Id_Perfil_Usuario) VALUES 
+    (sec_IdUsuario.nextval, 'Portero', 'Portero', 'portero', '1234', '1', 2);

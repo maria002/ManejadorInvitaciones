@@ -123,7 +123,7 @@ public class LoginPanel extends javax.swing.JPanel {
                 Sesion.usuarioLogeado = usuarios;
 
                 if (usuarios != null) {
-                    if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("Administracion")) {
+                    if (usuarios.getPerfilUsuario().getNombre().equalsIgnoreCase("Administrador")) {
                         this.txtClave.setText("");
                         padre.setVisible(false);
                         new ContenedorAdministrador(padre).setVisible(true);

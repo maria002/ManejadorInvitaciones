@@ -21,7 +21,6 @@ import javax.swing.table.DefaultTableModel;
 public class PanelListadoCompleto extends AbstractPanel {
 
     private ServicioInvitacion servicioInvitacion = new ServicioInvitacion();
-    private ServicioInvitado servicioInvitado = new ServicioInvitado();
     private ArrayList<Invitado> invitados;
     private DefaultTableModel model;
     private Object[] columnasTabla;

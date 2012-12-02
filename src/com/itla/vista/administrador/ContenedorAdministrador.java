@@ -2,12 +2,17 @@ package com.itla.vista.administrador;
 
 import com.itla.modelo.Sesion;
 import com.itla.vista.comun.AbstractPanel;
+import com.itla.vista.portero.PanelBuscarInvitados;
+import com.itla.vista.portero.PanelEventosActuales;
+import com.itla.vista.portero.PanelEventosProximos;
+import com.itla.vista.portero.PanelListadoCompleto;
 import java.awt.BorderLayout;
 import java.beans.PropertyVetoException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -51,6 +56,11 @@ public class ContenedorAdministrador extends javax.swing.JFrame {
         mnPerfilUsuario = new javax.swing.JMenuItem();
         jMenu7 = new javax.swing.JMenu();
         mnAyuda = new javax.swing.JMenuItem();
+        mnAdministrar = new javax.swing.JMenu();
+        mnEventosAct = new javax.swing.JMenuItem();
+        mnBuscarInv = new javax.swing.JMenuItem();
+        mnEventosProx = new javax.swing.JMenuItem();
+        mnListadoComp = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Manejador Invitaciones");
@@ -131,6 +141,42 @@ public class ContenedorAdministrador extends javax.swing.JFrame {
 
         jMenuBar1.add(jMenu7);
 
+        mnAdministrar.setText("Opciones");
+
+        mnEventosAct.setText("Eventos Actuales");
+        mnEventosAct.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnEventosActActionPerformed(evt);
+            }
+        });
+        mnAdministrar.add(mnEventosAct);
+
+        mnBuscarInv.setText("Buscar Invitados");
+        mnBuscarInv.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnBuscarInvActionPerformed(evt);
+            }
+        });
+        mnAdministrar.add(mnBuscarInv);
+
+        mnEventosProx.setText("Eventos Proximos");
+        mnEventosProx.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnEventosProxActionPerformed(evt);
+            }
+        });
+        mnAdministrar.add(mnEventosProx);
+
+        mnListadoComp.setText("Listado Completo");
+        mnListadoComp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mnListadoCompActionPerformed(evt);
+            }
+        });
+        mnAdministrar.add(mnListadoComp);
+
+        jMenuBar1.add(mnAdministrar);
+
         setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -160,7 +206,7 @@ public class ContenedorAdministrador extends javax.swing.JFrame {
     }//GEN-LAST:event_mnUsuariosActionPerformed
 
     private void mnInvitacionesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnInvitacionesActionPerformed
-        abrirVentana(new PanelCrearInvitacion(), "Invitacion");
+        abrirVentana(new PanelInvitacion(), "Invitacion");
     }//GEN-LAST:event_mnInvitacionesActionPerformed
 
     private void mnInvitadosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnInvitadosActionPerformed
@@ -176,6 +222,26 @@ public class ContenedorAdministrador extends javax.swing.JFrame {
         setVisible(false);
         padre.setVisible(true);
     }//GEN-LAST:event_mnCerrarSeccionActionPerformed
+
+    private void mnEventosActActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEventosActActionPerformed
+        abrirVentana(new PanelEventosActuales(null), "Usuarios");
+    }//GEN-LAST:event_mnEventosActActionPerformed
+
+    private void mnBuscarInvActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnBuscarInvActionPerformed
+        abrirVentana(new PanelBuscarInvitados(null), "Eventos");
+    }//GEN-LAST:event_mnBuscarInvActionPerformed
+
+    private void mnEventosProxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnEventosProxActionPerformed
+        abrirVentana(new PanelEventosProximos(null), "Invitacion");
+    }//GEN-LAST:event_mnEventosProxActionPerformed
+
+    private void mnListadoCompActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mnListadoCompActionPerformed
+        if (Sesion.eventoActual == null) {
+            JOptionPane.showMessageDialog(padre, "Debe elejir el evento que esta trabajando", "Elija el evento", JOptionPane.INFORMATION_MESSAGE);
+            return;
+        }
+        abrirVentana(new PanelListadoCompleto(null), "Invitados");
+    }//GEN-LAST:event_mnListadoCompActionPerformed
 
     public void abrirVentana(AbstractPanel panel, String titulo) {
         JInternalFrame frame = new JInternalFrame(titulo, true, true, true, true);
@@ -231,11 +297,16 @@ public class ContenedorAdministrador extends javax.swing.JFrame {
     private javax.swing.JMenu jMenu7;
     private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JDesktopPane mdiContainer;
+    private javax.swing.JMenu mnAdministrar;
     private javax.swing.JMenuItem mnAyuda;
+    private javax.swing.JMenuItem mnBuscarInv;
     private javax.swing.JMenuItem mnCerrarSeccion;
     private javax.swing.JMenuItem mnEventos;
+    private javax.swing.JMenuItem mnEventosAct;
+    private javax.swing.JMenuItem mnEventosProx;
     private javax.swing.JMenuItem mnInvitaciones;
     private javax.swing.JMenuItem mnInvitados;
+    private javax.swing.JMenuItem mnListadoComp;
     private javax.swing.JMenuItem mnPerfilUsuario;
     private javax.swing.JMenuItem mnSalir;
     private javax.swing.JMenuItem mnUsuarios;
